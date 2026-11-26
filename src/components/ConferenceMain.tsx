@@ -56,16 +56,11 @@ export const ConferenceMain: React.FC = () => {
             <tbody className="divide-y divide-slate-300">
               {config.importantDates.map((item) => (
                 <tr key={item.id} className="hover:bg-slate-50">
-                  <td className="p-3 border-r border-slate-300 text-slate-900 font-medium">
-                    {item.isHighlight ? <strong>{item.title}</strong> : item.title}
-                    {item.notes && (
-                      <div className="text-sm text-slate-700 mt-0.5">
-                        {item.notes}
-                      </div>
-                    )}
+                  <td className="p-3 border-r border-slate-300 text-slate-900 font-normal">
+                    {item.title}
                   </td>
-                  <td className="p-3 text-slate-900">
-                    {item.isHighlight ? <strong>{item.dateStr}</strong> : item.dateStr}
+                  <td className="p-3 text-slate-900 font-normal">
+                    {item.dateStr}
                   </td>
                 </tr>
               ))}
