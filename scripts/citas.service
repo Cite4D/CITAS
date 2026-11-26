@@ -1,0 +1,20 @@
+[Unit]
+Description=CITAS 2027 Conference Portal (De La Salle University)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/citas
+ExecStart=/usr/bin/npm run preview -- --host 0.0.0.0 --port 4173
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=PORT=4173
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target

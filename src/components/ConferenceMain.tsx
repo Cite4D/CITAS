@@ -197,19 +197,19 @@ export const ConferenceMain: React.FC = () => {
             </ul>
           </div>
 
-          <div className="p-4 border-2 border-dlsu-800 bg-emerald-50/40 space-y-2">
-            <h3 className="text-lg font-bold text-dlsu-900">Online Submission System:</h3>
-            <p className="text-sm sm:text-base">
+          <div className="p-4 border border-slate-300 bg-slate-50 space-y-2 max-w-[68ch]">
+            <h3 className="text-lg font-bold text-slate-900">Online Submission System:</h3>
+            <p className="text-base text-slate-900">
               Papers must be submitted online through the EasyChair Conference System:
             </p>
-            <div>
+            <div className="pt-1">
               <a
                 href={config.submissionGuidelines.portalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block px-5 py-2.5 bg-dlsu-800 hover:bg-dlsu-900 text-white font-sans font-bold text-sm tracking-wide"
+                className="text-base font-bold text-dlsu-900 hover:text-black underline inline-block"
               >
-                Go to EasyChair Submission Portal &rarr;
+                &rarr; Go to EasyChair Submission Portal
               </a>
             </div>
             <div className="text-xs font-mono text-slate-600 break-all pt-1">

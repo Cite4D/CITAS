@@ -1,12 +1,29 @@
-import React from 'react';
-import { ConferenceProvider } from './context/ConferenceContext';
+import React, { useEffect } from 'react';
+import { ConferenceProvider, useConference } from './context/ConferenceContext';
 import { Navbar } from './components/Navbar';
 import { ConferenceMain } from './components/ConferenceMain';
 import { ConferenceSidebar } from './components/ConferenceSidebar';
 import { Footer } from './components/Footer';
 import { AdminModal } from './components/admin/AdminModal';
+import { isLocalhost } from './utils/isLocalhost';
 
 const ConferencePortal: React.FC = () => {
+  const { isAdminOpen, setIsAdminOpen } = useConference();
+
+  // Keyboard shortcut (Alt+A or Ctrl+Shift+A) to toggle admin on localhost / authorized access
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.altKey && e.key.toLowerCase() === 'a') || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a')) {
+        if (isLocalhost()) {
+          e.preventDefault();
+          setIsAdminOpen(!isAdminOpen);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isAdminOpen, setIsAdminOpen]);
+
   return (
     <div id="home" className="min-h-screen flex flex-col bg-white text-[#1a1a1a]">
       {/* Top Academic Navigation & Masthead */}

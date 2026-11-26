@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useConference } from '../context/ConferenceContext';
+import { isLocalhost } from '../utils/isLocalhost';
 
 export const ConferenceSidebar: React.FC = () => {
   const { config, setIsAdminOpen } = useConference();
+  const showAdmin = useMemo(() => isLocalhost(), []);
 
   return (
     <aside className="space-y-6 font-sans">
@@ -37,14 +39,16 @@ export const ConferenceSidebar: React.FC = () => {
             Submissions must follow the two-column ACL format (max 6 pages).
           </p>
 
-          <a
-            href={config.submissionGuidelines.portalUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block text-center px-3 py-2 bg-dlsu-800 hover:bg-dlsu-900 text-white font-bold text-xs uppercase tracking-wide border border-dlsu-900 transition-colors"
-          >
-            EasyChair Submission &rarr;
-          </a>
+          <div>
+            <a
+              href={config.submissionGuidelines.portalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold text-sm text-dlsu-900 hover:text-black underline block"
+            >
+              &rarr; Submit via EasyChair
+            </a>
+          </div>
 
           <div className="pt-2 border-t border-slate-200 space-y-1.5">
             <div className="font-bold text-slate-900">Download Templates:</div>
@@ -95,22 +99,26 @@ export const ConferenceSidebar: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. Quick Admin CMS Box */}
-      <div className="border border-slate-300 bg-slate-50 p-3 space-y-2 text-xs">
-        <div className="font-bold text-slate-800 uppercase">
-          Organizer Admin
+      {/* 4. Quick Admin CMS Box (Only shown when viewing via localhost) */}
+      {showAdmin && (
+        <div className="border border-slate-300 bg-slate-50 p-3 space-y-2 text-xs">
+          <div className="font-bold text-slate-800 uppercase">
+            Organizer Admin (Localhost)
+          </div>
+          <p className="text-slate-600">
+            Update dates, scope topics, schedule, fees, and details live.
+          </p>
+          <div>
+            <button
+              type="button"
+              onClick={() => setIsAdminOpen(true)}
+              className="text-dlsu-900 hover:text-black font-bold underline text-xs block text-left"
+            >
+              &rarr; Open Admin CMS
+            </button>
+          </div>
         </div>
-        <p className="text-slate-600">
-          Update dates, scope topics, schedule, fees, and details live.
-        </p>
-        <button
-          type="button"
-          onClick={() => setIsAdminOpen(true)}
-          className="w-full py-1.5 bg-white border border-slate-400 hover:bg-slate-100 text-slate-800 font-bold text-xs"
-        >
-          Open Admin CMS
-        </button>
-      </div>
+      )}
     </aside>
   );
 };

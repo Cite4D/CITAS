@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useConference } from '../context/ConferenceContext';
+import { isLocalhost } from '../utils/isLocalhost';
 
 export const Footer: React.FC = () => {
   const { config, setIsAdminOpen } = useConference();
+  const showAdmin = useMemo(() => isLocalhost(), []);
 
   return (
     <footer className="w-full bg-slate-100 border-t-2 border-slate-300 py-8 text-xs sm:text-sm text-slate-700 font-sans mt-16">
@@ -17,15 +19,17 @@ export const Footer: React.FC = () => {
             </p>
           </div>
 
-          <div>
-            <button
-              type="button"
-              onClick={() => setIsAdminOpen(true)}
-              className="px-3 py-1.5 bg-white border border-slate-400 hover:bg-slate-50 text-slate-800 font-bold text-xs"
-            >
-              Admin / Edit Details
-            </button>
-          </div>
+          {showAdmin && (
+            <div>
+              <button
+                type="button"
+                onClick={() => setIsAdminOpen(true)}
+                className="text-xs text-slate-700 hover:text-black font-bold underline transition-colors"
+              >
+                Admin / Edit Details (Localhost)
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-slate-600">
