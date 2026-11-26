@@ -10,8 +10,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="./assets/index-s98a8ER1.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BlPZQPIp.css">
+    <script>
+      if (location.pathname === '/citas') {
+        location.replace('/citas/' + location.search + location.hash);
+      }
+    </script>
+    <script type="module" crossorigin src="/citas/assets/index-s98a8ER1.js"></script>
+    <link rel="stylesheet" crossorigin href="/citas/assets/index-BlPZQPIp.css">
   </head>
   <body class="bg-white text-[#1a1a1a] font-serif antialiased selection:bg-[#00563F] selection:text-white">
     <div id="root"></div>
