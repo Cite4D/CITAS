@@ -1,7 +1,7 @@
 import { ConferenceConfig } from '../types/conference';
 
 export const defaultConferenceData: ConferenceConfig = {
-  version: 2,
+  version: 3,
   lastUpdated: new Date().toISOString(),
   acronym: 'CITAS 2027',
   fullName: 'International Conference on Innovation, Technology, and Analytics for Society',
@@ -94,8 +94,8 @@ export const defaultConferenceData: ConferenceConfig = {
           description: 'Opening Program & Keynotes',
           details: [
             'Remarks from the Organizing Committee from De La Salle University, Manila, Philippines',
-            'Invited Speaker (1): Dr. Jaehun Park, Changwon National University, South Korea',
-            'Invited Speaker (2): Dr. Santoso Wibowo, CQUniversity, Australia'
+            'Invited Speaker (1): TBA',
+            'Invited Speaker (2): TBA'
           ]
         },
         {
@@ -106,7 +106,7 @@ export const defaultConferenceData: ConferenceConfig = {
           time: '11:30 - 12:00 NN',
           description: 'Keynote Address',
           details: [
-            'Invited Speaker: Representative from DOST - Advanced Science and Technology Institute (ASTI)'
+            'Invited Speaker: TBA'
           ]
         },
         {
@@ -117,8 +117,8 @@ export const defaultConferenceData: ConferenceConfig = {
           time: '1:00 - 2:00 PM',
           description: 'Afternoon Keynotes',
           details: [
-            'Invited Speaker (3): Dr. Norshuhani Zamin, UNITEN, Malaysia',
-            'Invited Speaker (4): Mr. Nardo Manoloto, CEO and Co-Founder Quantum Frontiers PH'
+            'Invited Speaker (3): TBA',
+            'Invited Speaker (4): TBA'
           ]
         },
         {
@@ -127,10 +127,7 @@ export const defaultConferenceData: ConferenceConfig = {
         },
         {
           time: '3:30 - 5:00 PM',
-          description: 'Poster Presentations for Ongoing Student Research',
-          details: [
-            'Presentations by DLSU BSIT/BSIS/MSIT capstone and research teams'
-          ]
+          description: 'Poster Presentations for Ongoing Student Research'
         },
         {
           time: '5:00 - 6:00 PM',
@@ -162,27 +159,27 @@ export const defaultConferenceData: ConferenceConfig = {
   ],
   invitedSpeakers: [
     {
-      name: 'Dr. Jaehun Park',
+      name: 'TBA',
       affiliation: 'Changwon National University, South Korea',
       topicOrRole: 'Invited Keynote Speaker'
     },
     {
-      name: 'Dr. Santoso Wibowo',
+      name: 'TBA',
       affiliation: 'CQUniversity, Australia',
       topicOrRole: 'Invited Keynote Speaker'
     },
     {
-      name: 'Representative from DOST-ASTI',
+      name: 'TBA',
       affiliation: 'Advanced Science and Technology Institute, Department of Science and Technology',
       topicOrRole: 'Government Technology Keynote'
     },
     {
-      name: 'Dr. Norshuhani Zamin',
+      name: 'TBA',
       affiliation: 'Universiti Tenaga Nasional (UNITEN), Malaysia',
       topicOrRole: 'Invited Keynote Speaker'
     },
     {
-      name: 'Mr. Nardo Manoloto',
+      name: 'TBA',
       affiliation: 'CEO and Co-Founder, Quantum Frontiers PH',
       topicOrRole: 'Industry Keynote Speaker'
     }

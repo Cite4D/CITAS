@@ -66,16 +66,16 @@ The conference brings together faculty, researchers, students, and representativ
 - **08:00 AM &ndash; 09:00 AM**: Registration & Morning Coffee
 - **09:00 AM &ndash; 10:00 AM**: Opening Program & Keynotes
   - Remarks from the Organizing Committee (DLSU Manila)
-  - Keynote: **Dr. Jaehun Park** (*Changwon National University, South Korea*)
-  - Keynote: **Dr. Santoso Wibowo** (*CQUniversity, Australia*)
+  - Keynote: **TBA**
+  - Keynote: **TBA**
 - **10:00 AM &ndash; 11:30 AM**: Oral Presentations for Full Papers (Parallel Sessions)
-- **11:30 AM &ndash; 12:00 NN**: Keynote Address: Representative from **DOST &ndash; Advanced Science and Technology Institute (ASTI)**
+- **11:30 AM &ndash; 12:00 NN**: Keynote Address: **TBA**
 - **12:00 NN &ndash; 1:00 PM**: Lunch Break & Networking
 - **1:00 PM &ndash; 2:00 PM**: Afternoon Keynotes
-  - Keynote: **Dr. Norshuhani Zamin** (*UNITEN, Malaysia*)
-  - Keynote: **Mr. Nardo Manoloto** (*CEO & Co-Founder, Quantum Frontiers PH*)
+  - Keynote: **TBA**
+  - Keynote: **TBA**
 - **2:00 PM &ndash; 3:30 PM**: Oral Presentations for Full Papers & Extended Abstracts (Parallel Sessions)
-- **3:30 PM &ndash; 5:00 PM**: Poster Presentations for Ongoing Student Research (DLSU/BSIT/BSIS/MSIT capstone teams)
+- **3:30 PM &ndash; 5:00 PM**: Poster Presentations for Ongoing Student Research
 - **5:00 PM &ndash; 6:00 PM**: Closing Remarks & Awarding Ceremony (*Best Paper Award & Best Student Presentation*)
 - **6:00 PM**: Conference Dinner
 
