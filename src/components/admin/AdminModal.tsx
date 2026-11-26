@@ -1,43 +1,19 @@
 import React, { useState } from 'react';
 import { useConference } from '../../context/ConferenceContext';
-import {
-  X,
-  Save,
-  RotateCcw,
-  Download,
-  Upload,
-  Plus,
-  Trash2,
-  Calendar,
-  Layers,
-  FileText,
-  MapPin,
-  CreditCard,
-  Settings,
-  AlertCircle,
-  CheckCircle2,
-  ExternalLink
-} from 'lucide-react';
-import { ImportantDate, ScopeCategory, RegistrationTier } from '../../types/conference';
+import { ImportantDate, RegistrationFee } from '../../types/conference';
 
 export const AdminModal: React.FC = () => {
   const {
     config,
     isAdminOpen,
     setIsAdminOpen,
-    updateGeneralInfo,
-    updateNoticeBanner,
-    updateImportantDates,
-    updateScopeCategories,
-    updateSubmission,
-    updateRegistrationTiers,
-    updateVenue,
+    updateConfig,
     resetToDefault,
     exportConfigAsJSON,
     importConfigFromJSON,
   } = useConference();
 
-  const [activeTab, setActiveTab] = useState<'general' | 'timeline' | 'scope' | 'submission' | 'registration' | 'venue' | 'backup'>('general');
+  const [activeTab, setActiveTab] = useState<'general' | 'dates' | 'program' | 'topics' | 'submission' | 'fees' | 'committee' | 'backup'>('general');
   const [importStatus, setImportStatus] = useState<{ success?: boolean; message?: string } | null>(null);
 
   // Local draft states
@@ -45,488 +21,353 @@ export const AdminModal: React.FC = () => {
     acronym: config.acronym,
     fullName: config.fullName,
     datesText: config.datesText,
-    mainConferenceDate: config.mainConferenceDate,
     venueBrief: config.venueBrief,
-    introText: config.introductionParagraphs.join('\n\n'),
-    aimsText: config.aimsParagraphs.join('\n\n'),
-    contactEmail: config.contactEmail,
-    emergencyContact: config.emergencyContact || '',
-    noticeEnabled: config.noticeBanner?.enabled ?? true,
-    noticeText: config.noticeBanner?.text || '',
+    venueDetailed: config.venueDetailed,
+    backgroundText: config.backgroundText.join('\n\n'),
+    objectivesText: config.objectives.join('\n'),
+    publicationNote: config.publicationNote,
   });
 
   const [datesDraft, setDatesDraft] = useState<ImportantDate[]>([...config.importantDates]);
-  const [scopeDraft, setScopeDraft] = useState<ScopeCategory[]>([...config.scopeCategories]);
-  const [submissionDraft, setSubmissionDraft] = useState({ ...config.submission });
-  const [tiersDraft, setTiersDraft] = useState<RegistrationTier[]>([...config.registrationTiers]);
-  const [venueDraft, setVenueDraft] = useState({
-    campus: config.venueFull.campus,
-    building: config.venueFull.building,
-    address: config.venueFull.address,
-    city: config.venueFull.city,
-    lat: config.venueFull.coordinates.lat,
-    lng: config.venueFull.coordinates.lng,
-    airport: config.venueFull.directionsGuide.airport,
-    transit: config.venueFull.directionsGuide.transit,
-    landmarks: config.venueFull.directionsGuide.landmarks,
-    mapEmbedUrl: config.venueFull.mapEmbedUrl,
-    venueBrief: config.venueBrief
-  });
+  const [topicsDraft, setTopicsDraft] = useState<string[]>([...config.topics]);
+  const [newTopicInput, setNewTopicInput] = useState('');
+  const [submissionDraft, setSubmissionDraft] = useState({ ...config.submissionGuidelines });
+  const [feesDraft, setFeesDraft] = useState<RegistrationFee[]>([...config.registrationFees]);
+  const [registrationNoteDraft, setRegistrationNoteDraft] = useState(config.registrationNote);
+  const [contactDraft, setContactDraft] = useState({ ...config.contactPerson });
 
-  // Track if changes are pending
-  const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   if (!isAdminOpen) return null;
 
-  const showSaveSuccess = (sectionName: string) => {
-    setFeedbackMsg(`${sectionName} saved successfully!`);
-    setTimeout(() => setFeedbackMsg(null), 3000);
+  const showSaved = (msg: string) => {
+    setStatusMessage(`${msg} saved.`);
+    setTimeout(() => setStatusMessage(null), 3000);
   };
 
-  // 1. Save General
+  // 1. General save
   const handleSaveGeneral = (e: React.FormEvent) => {
     e.preventDefault();
-    updateGeneralInfo({
+    updateConfig({
       acronym: generalDraft.acronym,
       fullName: generalDraft.fullName,
       datesText: generalDraft.datesText,
-      mainConferenceDate: generalDraft.mainConferenceDate,
       venueBrief: generalDraft.venueBrief,
-      introductionParagraphs: generalDraft.introText.split('\n\n').filter(Boolean),
-      aimsParagraphs: generalDraft.aimsText.split('\n\n').filter(Boolean),
-      contactEmail: generalDraft.contactEmail,
-      emergencyContact: generalDraft.emergencyContact,
-    });
-    updateNoticeBanner({
-      enabled: generalDraft.noticeEnabled,
-      text: generalDraft.noticeText,
-      type: 'info'
-    });
-    showSaveSuccess('General Details');
+      venueDetailed: generalDraft.venueDetailed,
+      backgroundText: generalDraft.backgroundText.split('\n\n').filter(Boolean),
+      objectives: generalDraft.objectivesText.split('\n').filter(Boolean),
+      publicationNote: generalDraft.publicationNote,
+    }, 'General details updated');
+    showSaved('General details');
   };
 
-  // 2. Timeline Helpers
+  // 2. Dates helpers
+  const handleUpdateDate = (id: string, field: keyof ImportantDate, val: any) => {
+    const updated = datesDraft.map((d) => (d.id === id ? { ...d, [field]: val } : d));
+    setDatesDraft(updated);
+    updateConfig({ importantDates: updated }, 'Dates updated');
+  };
+
   const handleAddDate = () => {
     const newDate: ImportantDate = {
       id: `date-${Date.now()}`,
-      dateStr: 'TBA 2027',
-      title: 'New Important Milestone',
-      description: 'Milestone description here.',
-      status: 'upcoming',
-      iconType: 'calendar'
+      dateStr: 'TBA',
+      title: 'New Milestone',
+      notes: ''
     };
     const updated = [...datesDraft, newDate];
     setDatesDraft(updated);
-    updateImportantDates(updated);
-  };
-
-  const handleUpdateDateItem = (id: string, field: keyof ImportantDate, value: any) => {
-    const updated = datesDraft.map((d) => (d.id === id ? { ...d, [field]: value } : d));
-    setDatesDraft(updated);
-    updateImportantDates(updated);
+    updateConfig({ importantDates: updated }, 'Milestone added');
   };
 
   const handleDeleteDate = (id: string) => {
     const updated = datesDraft.filter((d) => d.id !== id);
     setDatesDraft(updated);
-    updateImportantDates(updated);
+    updateConfig({ importantDates: updated }, 'Milestone removed');
   };
 
-  // 3. Scope Helpers
-  const [newTopicCategory, setNewTopicCategory] = useState<string>(scopeDraft[0]?.id || '');
-  const [newTopicText, setNewTopicText] = useState<string>('');
-
+  // 3. Topics helpers
   const handleAddTopic = () => {
-    if (!newTopicText.trim()) return;
-    const updated = scopeDraft.map((cat) => {
-      if (cat.id === newTopicCategory) {
-        return { ...cat, topics: [...cat.topics, newTopicText.trim()] };
-      }
-      return cat;
-    });
-    setScopeDraft(updated);
-    updateScopeCategories(updated);
-    setNewTopicText('');
-    showSaveSuccess('New research topic added');
+    if (!newTopicInput.trim()) return;
+    const updated = [...topicsDraft, newTopicInput.trim()];
+    setTopicsDraft(updated);
+    updateConfig({ topics: updated }, 'Topic added');
+    setNewTopicInput('');
+    showSaved('New topic added');
   };
 
-  const handleDeleteTopic = (categoryId: string, topicIndex: number) => {
-    const updated = scopeDraft.map((cat) => {
-      if (cat.id === categoryId) {
-        return { ...cat, topics: cat.topics.filter((_, idx) => idx !== topicIndex) };
-      }
-      return cat;
-    });
-    setScopeDraft(updated);
-    updateScopeCategories(updated);
+  const handleDeleteTopic = (idx: number) => {
+    const updated = topicsDraft.filter((_, i) => i !== idx);
+    setTopicsDraft(updated);
+    updateConfig({ topics: updated }, 'Topic removed');
   };
 
-  // 4. Submission Save
+  // 4. Submission save
   const handleSaveSubmission = (e: React.FormEvent) => {
     e.preventDefault();
-    updateSubmission(submissionDraft);
-    showSaveSuccess('Submission details');
+    updateConfig({ submissionGuidelines: submissionDraft }, 'Submission settings updated');
+    showSaved('Submission guidelines');
   };
 
-  // 5. Registration Helpers
-  const handleUpdateTier = (id: string, field: keyof RegistrationTier, val: any) => {
-    const updated = tiersDraft.map((t) => (t.id === id ? { ...t, [field]: val } : t));
-    setTiersDraft(updated);
-    updateRegistrationTiers(updated);
+  // 5. Fees save
+  const handleUpdateFee = (idx: number, field: keyof RegistrationFee, val: string) => {
+    const updated = feesDraft.map((f, i) => (i === idx ? { ...f, [field]: val } : f));
+    setFeesDraft(updated);
+    updateConfig({ registrationFees: updated, registrationNote: registrationNoteDraft }, 'Fees updated');
   };
 
-  // 6. Venue Save
-  const handleSaveVenue = (e: React.FormEvent) => {
+  const handleSaveFees = (e: React.FormEvent) => {
     e.preventDefault();
-    updateVenue(
-      {
-        campus: venueDraft.campus,
-        building: venueDraft.building,
-        address: venueDraft.address,
-        city: venueDraft.city,
-        coordinates: { lat: Number(venueDraft.lat), lng: Number(venueDraft.lng) },
-        directionsGuide: {
-          airport: venueDraft.airport,
-          transit: venueDraft.transit,
-          landmarks: venueDraft.landmarks
-        },
-        mapEmbedUrl: venueDraft.mapEmbedUrl
-      },
-      venueDraft.venueBrief
-    );
-    showSaveSuccess('Venue details');
+    updateConfig({ registrationFees: feesDraft, registrationNote: registrationNoteDraft }, 'Fees updated');
+    showSaved('Registration fees');
   };
 
-  // 7. File Import
+  // 6. Contact save
+  const handleSaveContact = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateConfig({ contactPerson: contactDraft }, 'Contact info updated');
+    showSaved('Contact information');
+  };
+
+  // 7. File import
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const res = await importConfigFromJSON(file);
       setImportStatus(res);
       if (res.success) {
-        // reload drafts
         setTimeout(() => window.location.reload(), 1000);
       }
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/80 backdrop-blur-sm flex justify-center p-2 sm:p-4 md:p-6 animate-fadeIn">
-      <div className="bg-white w-full max-w-5xl rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden border border-slate-200">
-        {/* Modal Header */}
-        <div className="bg-dlsu-900 text-white px-6 py-4 flex items-center justify-between border-b border-dlsu-800 flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-dlsu-800 text-emerald-300">
-              <Settings className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="font-serif font-bold text-lg text-white flex items-center gap-2">
-                CITAS 2027 Admin Portal & Content CMS
-              </h2>
-              <p className="text-xs text-dlsu-200">
-                Modify conference details, deadlines, EasyChair link, scope topics, and venue information.
-              </p>
-            </div>
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 flex justify-center p-3 sm:p-6 font-sans">
+      <div className="bg-white w-full max-w-4xl border-2 border-slate-700 shadow-2xl flex flex-col max-h-[92vh] overflow-hidden">
+        {/* Header */}
+        <div className="bg-dlsu-800 text-white px-5 py-3.5 flex items-center justify-between border-b border-dlsu-900">
+          <div>
+            <h2 className="font-bold text-base tracking-wide uppercase">
+              CITAS 2027 Conference Content Manager (Admin)
+            </h2>
+            <p className="text-xs text-emerald-100">
+              Update dates, program schedule, topics of interest, fees, and contact details.
+            </p>
           </div>
-
           <div className="flex items-center gap-3">
-            {feedbackMsg && (
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-emerald-500/20 text-emerald-300 text-xs font-semibold border border-emerald-400/30">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                {feedbackMsg}
+            {statusMessage && (
+              <span className="text-xs font-bold text-emerald-300">
+                {statusMessage}
               </span>
             )}
             <button
               type="button"
               onClick={() => setIsAdminOpen(false)}
-              className="p-1.5 rounded-lg text-dlsu-200 hover:text-white hover:bg-dlsu-800 transition-colors"
+              className="px-2.5 py-1 bg-dlsu-900 text-white text-xs font-bold border border-slate-600 hover:bg-black"
             >
-              <X className="w-5 h-5" />
+              Close [X]
             </button>
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="bg-slate-100 border-b border-slate-200 px-6 flex items-center gap-2 overflow-x-auto flex-shrink-0 py-2">
+        {/* Navigation Tabs (Plain Rectangular Academic Tabs) */}
+        <div className="bg-slate-100 border-b border-slate-300 px-4 py-2 flex flex-wrap gap-1">
           {[
-            { id: 'general', label: 'General & Hero', icon: Settings },
-            { id: 'timeline', label: 'Important Dates', icon: Calendar },
-            { id: 'scope', label: 'Scope & Topics', icon: Layers },
-            { id: 'submission', label: 'Paper Submission & EasyChair', icon: FileText },
-            { id: 'registration', label: 'Registration Fees', icon: CreditCard },
-            { id: 'venue', label: 'Venue & Transit', icon: MapPin },
-            { id: 'backup', label: 'Export / Import (JSON)', icon: Download },
-          ].map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
-                  isActive
-                    ? 'bg-white text-dlsu-900 shadow-xs border border-slate-200'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
-                }`}
-              >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-dlsu-800' : 'text-slate-500'}`} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
+            { id: 'general', label: 'General Info' },
+            { id: 'dates', label: 'Important Dates' },
+            { id: 'topics', label: 'Topics of Interest' },
+            { id: 'submission', label: 'Paper Submission' },
+            { id: 'fees', label: 'Registration Fees' },
+            { id: 'committee', label: 'Contact & Venue' },
+            { id: 'backup', label: 'Backup / JSON' },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`px-3 py-1.5 text-xs font-bold border transition-colors ${
+                activeTab === tab.id
+                  ? 'bg-white text-dlsu-800 border-slate-400'
+                  : 'bg-slate-200 text-slate-700 border-slate-300 hover:bg-slate-300'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
-        {/* Modal Body / Tab Content */}
-        <div className="p-6 overflow-y-auto flex-1 space-y-6">
+        {/* Tab Body */}
+        <div className="p-5 overflow-y-auto flex-1 space-y-5 text-sm text-slate-900">
           {/* TAB 1: GENERAL */}
           {activeTab === 'general' && (
-            <form onSubmit={handleSaveGeneral} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form onSubmit={handleSaveGeneral} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
                     Conference Acronym
                   </label>
                   <input
                     type="text"
                     value={generalDraft.acronym}
                     onChange={(e) => setGeneralDraft({ ...generalDraft, acronym: e.target.value })}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-dlsu-800"
+                    className="w-full p-2 border border-slate-300 text-sm"
                     required
                   />
                 </div>
-
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Conference Dates String
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Conference Dates
                   </label>
                   <input
                     type="text"
                     value={generalDraft.datesText}
                     onChange={(e) => setGeneralDraft({ ...generalDraft, datesText: e.target.value })}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-dlsu-800"
-                    placeholder="February 16 to 18, 2027"
+                    className="w-full p-2 border border-slate-300 text-sm"
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
                   Full Conference Title
                 </label>
                 <input
                   type="text"
                   value={generalDraft.fullName}
                   onChange={(e) => setGeneralDraft({ ...generalDraft, fullName: e.target.value })}
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-dlsu-800"
+                  className="w-full p-2 border border-slate-300 text-sm font-semibold"
                   required
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Main Conference Date Spotlight
-                  </label>
-                  <input
-                    type="text"
-                    value={generalDraft.mainConferenceDate}
-                    onChange={(e) => setGeneralDraft({ ...generalDraft, mainConferenceDate: e.target.value })}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-dlsu-800"
-                    placeholder="Wednesday, February 17, 2027"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Venue Brief Location
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Venue Brief
                   </label>
                   <input
                     type="text"
                     value={generalDraft.venueBrief}
                     onChange={(e) => setGeneralDraft({ ...generalDraft, venueBrief: e.target.value })}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-dlsu-800"
-                    placeholder="De La Salle University, Manila, Philippines"
+                    className="w-full p-2 border border-slate-300 text-sm"
                   />
                 </div>
-              </div>
-
-              {/* Notice Banner */}
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                    <span>Top Announcement Banner</span>
-                  </label>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={generalDraft.noticeEnabled}
-                      onChange={(e) => setGeneralDraft({ ...generalDraft, noticeEnabled: e.target.checked })}
-                      className="sr-only peer"
-                    />
-                    <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-dlsu-800"></div>
-                  </label>
-                </div>
-                {generalDraft.noticeEnabled && (
-                  <input
-                    type="text"
-                    value={generalDraft.noticeText}
-                    onChange={(e) => setGeneralDraft({ ...generalDraft, noticeText: e.target.value })}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-dlsu-800"
-                    placeholder="Call for Papers is now open! Initial submissions are due on November 20, 2026."
-                  />
-                )}
-              </div>
-
-              {/* Intro & Aims Paragraphs */}
-              <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Conference Introduction Paragraphs (Separate paragraphs with double enter)
-                  </label>
-                  <textarea
-                    rows={4}
-                    value={generalDraft.introText}
-                    onChange={(e) => setGeneralDraft({ ...generalDraft, introText: e.target.value })}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-dlsu-800 leading-relaxed"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Conference Aims & Objectives
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={generalDraft.aimsText}
-                    onChange={(e) => setGeneralDraft({ ...generalDraft, aimsText: e.target.value })}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-dlsu-800 leading-relaxed"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Secretariat Contact Email
-                  </label>
-                  <input
-                    type="email"
-                    value={generalDraft.contactEmail}
-                    onChange={(e) => setGeneralDraft({ ...generalDraft, contactEmail: e.target.value })}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-dlsu-800"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Telephone / Hotline
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Publication Note
                   </label>
                   <input
                     type="text"
-                    value={generalDraft.emergencyContact}
-                    onChange={(e) => setGeneralDraft({ ...generalDraft, emergencyContact: e.target.value })}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:ring-2 focus:ring-dlsu-800"
+                    value={generalDraft.publicationNote}
+                    onChange={(e) => setGeneralDraft({ ...generalDraft, publicationNote: e.target.value })}
+                    className="w-full p-2 border border-slate-300 text-sm"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end pt-4 border-t border-slate-200">
+              <div>
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                  Event Background (Double enter between paragraphs)
+                </label>
+                <textarea
+                  rows={4}
+                  value={generalDraft.backgroundText}
+                  onChange={(e) => setGeneralDraft({ ...generalDraft, backgroundText: e.target.value })}
+                  className="w-full p-2 border border-slate-300 text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                  Objectives (One per line)
+                </label>
+                <textarea
+                  rows={4}
+                  value={generalDraft.objectivesText}
+                  onChange={(e) => setGeneralDraft({ ...generalDraft, objectivesText: e.target.value })}
+                  className="w-full p-2 border border-slate-300 text-sm"
+                />
+              </div>
+
+              <div className="pt-2">
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-dlsu-800 hover:bg-dlsu-900 text-white font-semibold text-sm shadow-sm"
+                  className="px-5 py-2 bg-dlsu-800 text-white font-bold text-xs uppercase hover:bg-dlsu-900"
                 >
-                  <Save className="w-4 h-4" />
-                  <span>Save General Information</span>
+                  Save General Details
                 </button>
               </div>
             </form>
           )}
 
-          {/* TAB 2: TIMELINE & IMPORTANT DATES */}
-          {activeTab === 'timeline' && (
-            <div className="space-y-6">
+          {/* TAB 2: IMPORTANT DATES */}
+          {activeTab === 'dates' && (
+            <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-bold text-slate-900 text-base">Important Dates & Milestones</h3>
-                  <p className="text-xs text-slate-500">Edit existing milestone dates, titles, descriptions, and visual badges.</p>
+                <div className="font-bold text-slate-800 uppercase text-xs">
+                  Conference Milestones & Deadlines
                 </div>
                 <button
                   type="button"
                   onClick={handleAddDate}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-dlsu-800 hover:bg-dlsu-900 text-white text-xs font-semibold shadow-xs"
+                  className="px-3 py-1 bg-slate-200 border border-slate-400 font-bold text-xs hover:bg-slate-300"
                 >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>Add New Milestone</span>
+                  + Add Milestone
                 </button>
               </div>
 
-              <div className="space-y-4">
-                {datesDraft.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 relative group"
-                  >
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-                      <div className="md:col-span-4">
-                        <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+              <div className="space-y-3">
+                {datesDraft.map((item) => (
+                  <div key={item.id} className="p-3 border border-slate-300 bg-slate-50 space-y-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
+                      <div className="sm:col-span-5">
+                        <label className="block text-[11px] font-bold text-slate-600 uppercase">
                           Date String
                         </label>
                         <input
                           type="text"
                           value={item.dateStr}
-                          onChange={(e) => handleUpdateDateItem(item.id, 'dateStr', e.target.value)}
-                          className="w-full px-3 py-1.5 text-xs sm:text-sm rounded border border-slate-300 font-medium"
-                          placeholder="November 20, 2026"
+                          onChange={(e) => handleUpdateDate(item.id, 'dateStr', e.target.value)}
+                          className="w-full p-1.5 border border-slate-300 text-xs font-semibold"
                         />
                       </div>
-
-                      <div className="md:col-span-5">
-                        <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
-                          Milestone Title
+                      <div className="sm:col-span-5">
+                        <label className="block text-[11px] font-bold text-slate-600 uppercase">
+                          Title
                         </label>
                         <input
                           type="text"
                           value={item.title}
-                          onChange={(e) => handleUpdateDateItem(item.id, 'title', e.target.value)}
-                          className="w-full px-3 py-1.5 text-xs sm:text-sm rounded border border-slate-300 font-semibold"
-                          placeholder="Submission Deadline"
+                          onChange={(e) => handleUpdateDate(item.id, 'title', e.target.value)}
+                          className="w-full p-1.5 border border-slate-300 text-xs"
                         />
                       </div>
-
-                      <div className="md:col-span-3">
-                        <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
-                          Status Style
+                      <div className="sm:col-span-2 flex items-end">
+                        <label className="flex items-center gap-1.5 text-xs text-slate-700 cursor-pointer mb-1">
+                          <input
+                            type="checkbox"
+                            checked={item.isHighlight || false}
+                            onChange={(e) => handleUpdateDate(item.id, 'isHighlight', e.target.checked)}
+                          />
+                          <span>Highlight</span>
                         </label>
-                        <select
-                          value={item.status}
-                          onChange={(e) => handleUpdateDateItem(item.id, 'status', e.target.value)}
-                          className="w-full px-3 py-1.5 text-xs sm:text-sm rounded border border-slate-300 bg-white"
-                        >
-                          <option value="upcoming">Upcoming</option>
-                          <option value="active">Active (Green pulse)</option>
-                          <option value="highlighted">Key Milestone (Amber/Red)</option>
-                          <option value="passed">Completed</option>
-                        </select>
                       </div>
                     </div>
-
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       <input
                         type="text"
-                        value={item.description || ''}
-                        onChange={(e) => handleUpdateDateItem(item.id, 'description', e.target.value)}
-                        placeholder="Optional brief description or note for authors..."
-                        className="flex-1 px-3 py-1 text-xs rounded border border-slate-200 text-slate-600"
+                        value={item.notes || ''}
+                        onChange={(e) => handleUpdateDate(item.id, 'notes', e.target.value)}
+                        placeholder="Optional notes..."
+                        className="flex-1 p-1.5 border border-slate-300 text-xs text-slate-600"
                       />
                       <button
                         type="button"
                         onClick={() => handleDeleteDate(item.id)}
-                        className="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded"
-                        title="Delete milestone"
+                        className="px-2 py-1 bg-red-100 text-red-800 text-xs font-bold hover:bg-red-200 border border-red-300"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        Delete
                       </button>
                     </div>
                   </div>
@@ -535,484 +376,304 @@ export const AdminModal: React.FC = () => {
             </div>
           )}
 
-          {/* TAB 3: SCOPE & RESEARCH TOPICS */}
-          {activeTab === 'scope' && (
-            <div className="space-y-6">
-              {/* Add Topic Bar */}
-              <div className="p-4 rounded-xl bg-dlsu-50 border border-dlsu-200/80 flex flex-col sm:flex-row items-center gap-3">
-                <div className="w-full sm:w-1/3">
-                  <label className="block text-[11px] font-bold text-dlsu-900 uppercase mb-1">
-                    Select Cluster Category
-                  </label>
-                  <select
-                    value={newTopicCategory}
-                    onChange={(e) => setNewTopicCategory(e.target.value)}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-dlsu-300 bg-white font-medium"
-                  >
-                    {scopeDraft.map((cat) => (
-                      <option key={cat.id} value={cat.id}>
-                        {cat.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="w-full sm:flex-1">
-                  <label className="block text-[11px] font-bold text-dlsu-900 uppercase mb-1">
-                    New Topic Title
-                  </label>
-                  <input
-                    type="text"
-                    value={newTopicText}
-                    onChange={(e) => setNewTopicText(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handleAddTopic();
-                      }
-                    }}
-                    placeholder="e.g. LLM Reasoning, Cyber-Physical Digital Twins..."
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-dlsu-300 bg-white"
-                  />
-                </div>
-
-                <div className="sm:pt-5 w-full sm:w-auto">
-                  <button
-                    type="button"
-                    onClick={handleAddTopic}
-                    className="w-full sm:w-auto px-4 py-2 rounded-lg bg-dlsu-800 text-white text-xs font-bold hover:bg-dlsu-900 shadow-xs flex items-center justify-center gap-1.5"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>Add Topic</span>
-                  </button>
-                </div>
+          {/* TAB 3: TOPICS OF INTEREST */}
+          {activeTab === 'topics' && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={newTopicInput}
+                  onChange={(e) => setNewTopicInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddTopic();
+                    }
+                  }}
+                  placeholder="Enter new research topic..."
+                  className="flex-1 p-2 border border-slate-300 text-xs"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddTopic}
+                  className="px-4 py-2 bg-dlsu-800 text-white text-xs font-bold uppercase hover:bg-dlsu-900"
+                >
+                  Add Topic
+                </button>
               </div>
 
-              {/* Categorized Topic Lists */}
-              <div className="space-y-6">
-                {scopeDraft.map((cat) => (
-                  <div key={cat.id} className="p-5 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-3">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                      <div>
-                        <h4 className="font-serif font-bold text-dlsu-900 text-base">{cat.name}</h4>
-                        <p className="text-xs text-slate-500">{cat.description}</p>
-                      </div>
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600">
-                        {cat.topics.length} topics
-                      </span>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2">
-                      {cat.topics.map((t, idx) => (
-                        <span
-                          key={idx}
-                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200"
-                        >
-                          <span>{t}</span>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteTopic(cat.id, idx)}
-                            className="text-slate-400 hover:text-red-500 ml-0.5"
-                            title="Remove topic"
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
-                        </span>
-                      ))}
-                    </div>
+              <div className="border border-slate-300 divide-y divide-slate-200">
+                {topicsDraft.map((t, idx) => (
+                  <div key={idx} className="p-2 flex items-center justify-between text-xs hover:bg-slate-50">
+                    <span className="font-medium text-slate-800">{idx + 1}. {t}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteTopic(idx)}
+                      className="text-red-700 font-bold hover:underline"
+                    >
+                      Remove
+                    </button>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* TAB 4: PAPER SUBMISSION & EASYCHAIR */}
+          {/* TAB 4: PAPER SUBMISSION */}
           {activeTab === 'submission' && (
-            <form onSubmit={handleSaveSubmission} className="space-y-6">
-              <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex items-start gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
-                <span>
-                  Update the EasyChair submission link below anytime your conference account, track identifier, or CFP link changes.
-                </span>
-              </div>
-
+            <form onSubmit={handleSaveSubmission} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
                   EasyChair Conference Submission URL
                 </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="url"
-                    value={submissionDraft.submissionPortalUrl}
-                    onChange={(e) => setSubmissionDraft({ ...submissionDraft, submissionPortalUrl: e.target.value })}
-                    className="flex-1 px-3 py-2 text-sm rounded-lg border border-slate-300 font-mono text-dlsu-900"
-                    placeholder="https://easychair.org/conferences/?conf=ailric2027"
-                    required
-                  />
-                  <a
-                    href={submissionDraft.submissionPortalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 text-slate-500 hover:text-dlsu-800 bg-slate-100 rounded-lg border border-slate-200"
-                    title="Test Open URL"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                  </a>
-                </div>
+                <input
+                  type="url"
+                  value={submissionDraft.portalUrl}
+                  onChange={(e) => setSubmissionDraft({ ...submissionDraft, portalUrl: e.target.value })}
+                  className="w-full p-2 border border-slate-300 text-xs font-mono"
+                  required
+                />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    LaTeX Template Repository URL (GitHub)
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    LaTeX Template URL
                   </label>
                   <input
                     type="url"
                     value={submissionDraft.templateLatexUrl}
                     onChange={(e) => setSubmissionDraft({ ...submissionDraft, templateLatexUrl: e.target.value })}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300 font-mono"
+                    className="w-full p-2 border border-slate-300 text-xs font-mono"
                   />
                 </div>
-
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Microsoft Word (.docx) Template URL
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Word (.docx) Template URL
                   </label>
                   <input
                     type="url"
                     value={submissionDraft.templateDocxUrl}
                     onChange={(e) => setSubmissionDraft({ ...submissionDraft, templateDocxUrl: e.target.value })}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300 font-mono"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Format Specification Name
-                  </label>
-                  <input
-                    type="text"
-                    value={submissionDraft.formatName}
-                    onChange={(e) => setSubmissionDraft({ ...submissionDraft, formatName: e.target.value })}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Page Limit Specification
-                  </label>
-                  <input
-                    type="text"
-                    value={submissionDraft.pageLimit}
-                    onChange={(e) => setSubmissionDraft({ ...submissionDraft, pageLimit: e.target.value })}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300"
+                    className="w-full p-2 border border-slate-300 text-xs font-mono"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                  Double-Blind Review Requirements
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                  Submission Summary
                 </label>
                 <textarea
                   rows={3}
-                  value={submissionDraft.blindReviewNotes}
-                  onChange={(e) => setSubmissionDraft({ ...submissionDraft, blindReviewNotes: e.target.value })}
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300"
+                  value={submissionDraft.summary}
+                  onChange={(e) => setSubmissionDraft({ ...submissionDraft, summary: e.target.value })}
+                  className="w-full p-2 border border-slate-300 text-xs"
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                  Presentation & Proceedings Statement
-                </label>
-                <textarea
-                  rows={2}
-                  value={submissionDraft.presentationNotes}
-                  onChange={(e) => setSubmissionDraft({ ...submissionDraft, presentationNotes: e.target.value })}
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300"
-                />
-              </div>
-
-              <div className="flex justify-end pt-4 border-t border-slate-200">
+              <div className="pt-2">
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-dlsu-800 hover:bg-dlsu-900 text-white font-semibold text-sm shadow-sm"
+                  className="px-5 py-2 bg-dlsu-800 text-white font-bold text-xs uppercase hover:bg-dlsu-900"
                 >
-                  <Save className="w-4 h-4" />
-                  <span>Save Submission Settings</span>
+                  Save Submission Settings
                 </button>
               </div>
             </form>
           )}
 
           {/* TAB 5: REGISTRATION FEES */}
-          {activeTab === 'registration' && (
-            <div className="space-y-6">
-              <div>
-                <h3 className="font-bold text-slate-900 text-base">Registration Tiers & Pricing</h3>
-                <p className="text-xs text-slate-500">Update rates, currencies, and inclusions for authors and participants.</p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {tiersDraft.map((tier) => (
-                  <div key={tier.id} className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-dlsu-800 uppercase tracking-wide">
-                        {tier.category}
-                      </span>
-                      <label className="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={tier.isPopular || false}
-                          onChange={(e) => handleUpdateTier(tier.id, 'isPopular', e.target.checked)}
-                          className="rounded text-dlsu-800"
-                        />
-                        <span>Featured</span>
-                      </label>
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
-                        Tier Name
-                      </label>
-                      <input
-                        type="text"
-                        value={tier.name}
-                        onChange={(e) => handleUpdateTier(tier.id, 'name', e.target.value)}
-                        className="w-full px-3 py-1.5 text-xs sm:text-sm rounded border border-slate-300 font-semibold"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
-                          Early Bird Rate
+          {activeTab === 'fees' && (
+            <form onSubmit={handleSaveFees} className="space-y-4">
+              <div className="space-y-3">
+                {feesDraft.map((fee, idx) => (
+                  <div key={idx} className="p-3 border border-slate-300 bg-slate-50 space-y-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-2">
+                      <div className="sm:col-span-7">
+                        <label className="block text-[11px] font-bold text-slate-600 uppercase">
+                          Participant Type
                         </label>
                         <input
                           type="text"
-                          value={tier.earlyBirdRate}
-                          onChange={(e) => handleUpdateTier(tier.id, 'earlyBirdRate', e.target.value)}
-                          className="w-full px-3 py-1.5 text-xs sm:text-sm rounded border border-slate-300 font-mono"
+                          value={fee.participantType}
+                          onChange={(e) => handleUpdateFee(idx, 'participantType', e.target.value)}
+                          className="w-full p-1.5 border border-slate-300 text-xs font-bold"
                         />
                       </div>
-                      <div>
-                        <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
-                          Regular Rate
+                      <div className="sm:col-span-5">
+                        <label className="block text-[11px] font-bold text-slate-600 uppercase">
+                          Amount
                         </label>
                         <input
                           type="text"
-                          value={tier.regularRate}
-                          onChange={(e) => handleUpdateTier(tier.id, 'regularRate', e.target.value)}
-                          className="w-full px-3 py-1.5 text-xs sm:text-sm rounded border border-slate-300 font-mono"
+                          value={fee.amount}
+                          onChange={(e) => handleUpdateFee(idx, 'amount', e.target.value)}
+                          className="w-full p-1.5 border border-slate-300 text-xs font-mono font-bold"
                         />
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
-          )}
-
-          {/* TAB 6: VENUE & TRANSIT */}
-          {activeTab === 'venue' && (
-            <form onSubmit={handleSaveVenue} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Campus Name
-                  </label>
-                  <input
-                    type="text"
-                    value={venueDraft.campus}
-                    onChange={(e) => setVenueDraft({ ...venueDraft, campus: e.target.value })}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Building / Hall
-                  </label>
-                  <input
-                    type="text"
-                    value={venueDraft.building}
-                    onChange={(e) => setVenueDraft({ ...venueDraft, building: e.target.value })}
-                    className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300"
-                  />
-                </div>
-              </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                  Full Street Address
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                  Registration Note / Free Attendance Policy
                 </label>
                 <input
                   type="text"
-                  value={venueDraft.address}
-                  onChange={(e) => setVenueDraft({ ...venueDraft, address: e.target.value })}
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300"
+                  value={registrationNoteDraft}
+                  onChange={(e) => setRegistrationNoteDraft(e.target.value)}
+                  className="w-full p-2 border border-slate-300 text-xs"
                 />
               </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Directions from Airport (NAIA)
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={venueDraft.airport}
-                    onChange={(e) => setVenueDraft({ ...venueDraft, airport: e.target.value })}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Public Transit / LRT-1 Directions
-                  </label>
-                  <textarea
-                    rows={2}
-                    value={venueDraft.transit}
-                    onChange={(e) => setVenueDraft({ ...venueDraft, transit: e.target.value })}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                  Google Map Embed iframe URL
-                </label>
-                <input
-                  type="text"
-                  value={venueDraft.mapEmbedUrl}
-                  onChange={(e) => setVenueDraft({ ...venueDraft, mapEmbedUrl: e.target.value })}
-                  className="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 font-mono text-slate-600"
-                />
-              </div>
-
-              <div className="flex justify-end pt-4 border-t border-slate-200">
+              <div className="pt-2">
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-dlsu-800 hover:bg-dlsu-900 text-white font-semibold text-sm shadow-sm"
+                  className="px-5 py-2 bg-dlsu-800 text-white font-bold text-xs uppercase hover:bg-dlsu-900"
                 >
-                  <Save className="w-4 h-4" />
-                  <span>Save Venue Information</span>
+                  Save Registration Fees
                 </button>
               </div>
             </form>
           )}
 
-          {/* TAB 7: BACKUP & EXPORT / IMPORT */}
-          {activeTab === 'backup' && (
-            <div className="space-y-6">
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-lg bg-dlsu-100 text-dlsu-800">
-                    <Download className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 text-base">Export Configuration as JSON</h4>
-                    <p className="text-xs text-slate-600 leading-relaxed">
-                      Download your current conference settings (dates, scope, submission links, venue, and texts) as a standalone JSON file. You can commit this file or share it with the team.
-                    </p>
-                  </div>
-                </div>
-
+          {/* TAB 6: CONTACT & VENUE */}
+          {activeTab === 'committee' && (
+            <form onSubmit={handleSaveContact} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <button
-                    type="button"
-                    onClick={exportConfigAsJSON}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-dlsu-800 text-white font-semibold text-xs hover:bg-dlsu-900 shadow-sm"
-                  >
-                    <Download className="w-4 h-4" />
-                    <span>Download citas-config.json</span>
-                  </button>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Contact Person Name
+                  </label>
+                  <input
+                    type="text"
+                    value={contactDraft.name}
+                    onChange={(e) => setContactDraft({ ...contactDraft, name: e.target.value })}
+                    className="w-full p-2 border border-slate-300 text-xs font-bold"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Phone / Contact Number
+                  </label>
+                  <input
+                    type="text"
+                    value={contactDraft.phone}
+                    onChange={(e) => setContactDraft({ ...contactDraft, phone: e.target.value })}
+                    className="w-full p-2 border border-slate-300 text-xs"
+                  />
                 </div>
               </div>
 
-              <div className="p-5 rounded-2xl bg-white border border-slate-200 space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-lg bg-blue-100 text-blue-800">
-                    <Upload className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 text-base">Import Configuration from JSON</h4>
-                    <p className="text-xs text-slate-600 leading-relaxed">
-                      Restore or load previously saved conference settings from a JSON file.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs border border-slate-300 cursor-pointer">
-                    <Upload className="w-4 h-4" />
-                    <span>Select JSON File to Upload</span>
-                    <input
-                      type="file"
-                      accept=".json"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                    />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Email
                   </label>
+                  <input
+                    type="email"
+                    value={contactDraft.email}
+                    onChange={(e) => setContactDraft({ ...contactDraft, email: e.target.value })}
+                    className="w-full p-2 border border-slate-300 text-xs"
+                  />
                 </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Department
+                  </label>
+                  <input
+                    type="text"
+                    value={contactDraft.department}
+                    onChange={(e) => setContactDraft({ ...contactDraft, department: e.target.value })}
+                    className="w-full p-2 border border-slate-300 text-xs"
+                  />
+                </div>
+              </div>
 
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-dlsu-800 text-white font-bold text-xs uppercase hover:bg-dlsu-900"
+                >
+                  Save Contact Info
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* TAB 7: BACKUP & JSON */}
+          {activeTab === 'backup' && (
+            <div className="space-y-5">
+              <div className="p-4 border border-slate-300 bg-slate-50 space-y-2">
+                <div className="font-bold text-slate-900 uppercase text-xs">
+                  Export Configuration (JSON)
+                </div>
+                <p className="text-xs text-slate-700">
+                  Download the current conference details as a JSON file to share or keep as a backup.
+                </p>
+                <button
+                  type="button"
+                  onClick={exportConfigAsJSON}
+                  className="px-4 py-2 bg-dlsu-800 text-white font-bold text-xs uppercase hover:bg-dlsu-900"
+                >
+                  Download citas-2027-config.json
+                </button>
+              </div>
+
+              <div className="p-4 border border-slate-300 bg-slate-50 space-y-2">
+                <div className="font-bold text-slate-900 uppercase text-xs">
+                  Import Configuration (JSON)
+                </div>
+                <p className="text-xs text-slate-700">
+                  Upload an existing configuration JSON file to load saved updates.
+                </p>
+                <label className="inline-block px-4 py-2 bg-slate-200 border border-slate-400 text-slate-800 font-bold text-xs uppercase cursor-pointer hover:bg-slate-300">
+                  Choose JSON File
+                  <input
+                    type="file"
+                    accept=".json"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                </label>
                 {importStatus && (
-                  <div
-                    className={`p-3 rounded-lg text-xs font-medium ${
-                      importStatus.success ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-red-50 text-red-800 border border-red-200'
-                    }`}
-                  >
+                  <div className="text-xs font-bold text-slate-800 pt-1">
                     {importStatus.message}
                   </div>
                 )}
               </div>
 
-              <div className="p-5 rounded-2xl bg-red-50/60 border border-red-200 space-y-3">
-                <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-lg bg-red-100 text-red-700">
-                    <RotateCcw className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-red-900 text-base">Reset to Default DLSU Settings</h4>
-                    <p className="text-xs text-red-700 leading-relaxed">
-                      Reverts all conference details, topics, and dates back to the original draft data. All custom edits in your browser storage will be reset.
-                    </p>
-                  </div>
+              <div className="p-4 border border-red-300 bg-red-50 space-y-2">
+                <div className="font-bold text-red-900 uppercase text-xs">
+                  Reset to Official Proposal Defaults
                 </div>
-
-                <div>
-                  <button
-                    type="button"
-                    onClick={resetToDefault}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-red-300 text-red-700 text-xs font-bold hover:bg-red-50 shadow-2xs"
-                  >
-                    <RotateCcw className="w-4 h-4" />
-                    <span>Reset All Details to Defaults</span>
-                  </button>
-                </div>
+                <p className="text-xs text-red-800">
+                  Revert all text, deadlines, program schedule, and fees back to the verified PDF proposal.
+                </p>
+                <button
+                  type="button"
+                  onClick={resetToDefault}
+                  className="px-4 py-2 bg-white text-red-800 border border-red-400 font-bold text-xs uppercase hover:bg-red-100"
+                >
+                  Reset to Defaults
+                </button>
               </div>
             </div>
           )}
         </div>
 
-        {/* Modal Footer */}
-        <div className="bg-slate-50 border-t border-slate-200 px-6 py-3 flex items-center justify-between text-xs text-slate-500 flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            <span>Changes persist automatically in your browser (LocalStorage)</span>
-          </div>
+        {/* Footer */}
+        <div className="bg-slate-100 border-t border-slate-300 px-5 py-3 flex items-center justify-between text-xs text-slate-600">
+          <span>Edits are automatically saved to browser storage.</span>
           <button
             type="button"
             onClick={() => setIsAdminOpen(false)}
-            className="px-4 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-700 font-semibold hover:bg-slate-100 text-xs"
+            className="px-3 py-1 bg-white border border-slate-400 text-slate-800 font-bold text-xs"
           >
-            Close Admin Panel
+            Close
           </button>
         </div>
       </div>

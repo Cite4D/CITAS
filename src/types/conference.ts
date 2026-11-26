@@ -1,90 +1,77 @@
-export interface Organizer {
-  id: string;
-  name: string;
-  role: string;
-  institution: string;
-  logoUrl?: string;
-  websiteUrl?: string;
-}
-
 export interface ImportantDate {
   id: string;
   dateStr: string;
   title: string;
-  description?: string;
-  status: 'upcoming' | 'active' | 'passed' | 'highlighted';
-  iconType: 'document' | 'check' | 'card' | 'pencil' | 'calendar' | 'award';
+  notes?: string;
+  isHighlight?: boolean;
 }
 
-export interface ScopeCategory {
-  id: string;
-  name: string;
+export interface ProgramItem {
+  time: string;
   description: string;
-  topics: string[];
+  details?: string[];
 }
 
-export interface SubmissionDetails {
-  submissionPortalName: string;
-  submissionPortalUrl: string;
-  formatName: string;
-  pageLimit: string;
-  guidelinesSummary: string;
-  templateLatexUrl: string;
-  templateDocxUrl: string;
-  blindReviewNotes: string;
-  presentationNotes: string;
+export interface ProgramDay {
+  dayTitle: string;
+  dateStr: string;
+  items: ProgramItem[];
 }
 
-export interface RegistrationTier {
-  id: string;
+export interface CommitteePerson {
+  role: string;
   name: string;
-  category: 'Local (PHP)' | 'International (USD)';
-  earlyBirdRate: string;
-  regularRate: string;
-  perks: string[];
-  isPopular?: boolean;
+  affiliation: string;
 }
 
-export interface VenueInfo {
-  campus: string;
-  building: string;
-  address: string;
-  city: string;
-  coordinates: {
-    lat: number;
-    lng: number;
-  };
-  directionsGuide: {
-    airport: string;
-    transit: string;
-    landmarks: string;
-  };
-  mapEmbedUrl: string;
+export interface RegistrationFee {
+  participantType: string;
+  amount: string;
+  notes?: string;
 }
 
 export interface ConferenceConfig {
   version: number;
   lastUpdated: string;
   acronym: string;
-  edition: string;
   fullName: string;
-  tagline: string;
   datesText: string;
-  mainConferenceDate: string;
   venueBrief: string;
-  venueFull: VenueInfo;
-  introductionParagraphs: string[];
-  aimsParagraphs: string[];
-  organizers: Organizer[];
+  venueDetailed: string;
+  backgroundText: string[];
+  objectives: string[];
+  publicationNote: string;
   importantDates: ImportantDate[];
-  scopeCategories: ScopeCategory[];
-  submission: SubmissionDetails;
-  registrationTiers: RegistrationTier[];
-  contactEmail: string;
-  emergencyContact?: string;
-  noticeBanner?: {
-    enabled: boolean;
-    text: string;
-    type: 'info' | 'warning' | 'success';
+  programSchedule: ProgramDay[];
+  invitedSpeakers: {
+    name: string;
+    affiliation: string;
+    topicOrRole?: string;
+  }[];
+  invitedPartners: string[];
+  committeeLeadership: CommitteePerson[];
+  committeeMembers: {
+    name: string;
+    affiliation: string;
+  }[];
+  topics: string[];
+  registrationFees: RegistrationFee[];
+  registrationNote: string;
+  submissionGuidelines: {
+    formatName: string;
+    pageLimit: string;
+    summary: string;
+    templateLatexUrl: string;
+    templateDocxUrl: string;
+    portalUrl: string;
+    blindReviewRules: string[];
+  };
+  contactPerson: {
+    name: string;
+    title: string;
+    department: string;
+    institution: string;
+    phone: string;
+    email: string;
   };
 }

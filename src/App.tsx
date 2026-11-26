@@ -8,20 +8,20 @@ import { AdminModal } from './components/admin/AdminModal';
 
 const ConferencePortal: React.FC = () => {
   return (
-    <div id="home" className="min-h-screen flex flex-col bg-[#fafbf9] text-slate-800">
-      {/* Top Academic Navigation & Institutional Masthead */}
+    <div id="home" className="min-h-screen flex flex-col bg-white text-[#1a1a1a]">
+      {/* Top Academic Navigation & Masthead */}
       <Navbar />
 
-      {/* Main 2-Column Academic Content Body (Standard IEEE / SIBR Layout) */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Full Academic Details, CFP, Guidelines, Fees & Venue */}
-          <div className="lg:col-span-8">
+      {/* Main 2-Column Content Layout (SIBR / IEEE Academic Conference Standard) */}
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 sm:py-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          {/* Main Content Area */}
+          <div className="md:col-span-8 lg:col-span-9">
             <ConferenceMain />
           </div>
 
-          {/* Right Column: Important Dates, Submission Link, Inquiries, Admin Trigger */}
-          <div className="lg:col-span-4 lg:sticky lg:top-4">
+          {/* Sidebar Area */}
+          <div className="md:col-span-4 lg:col-span-3 md:sticky md:top-4">
             <ConferenceSidebar />
           </div>
         </div>
@@ -30,7 +30,7 @@ const ConferencePortal: React.FC = () => {
       {/* Academic Footer */}
       <Footer />
 
-      {/* Live Admin CMS Modal */}
+      {/* Admin CMS Modal */}
       <AdminModal />
     </div>
   );

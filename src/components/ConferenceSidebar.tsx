@@ -1,144 +1,114 @@
 import React from 'react';
 import { useConference } from '../context/ConferenceContext';
-import { Calendar, Download, ExternalLink, Mail, Settings, FileText, CheckCircle } from 'lucide-react';
 
 export const ConferenceSidebar: React.FC = () => {
   const { config, setIsAdminOpen } = useConference();
 
   return (
-    <aside className="space-y-6">
-      {/* 1. Important Dates Box (Classic IEEE/SIBR Sidebar) */}
-      <div className="bg-white border border-slate-300 rounded shadow-2xs overflow-hidden">
-        <div className="bg-dlsu-800 text-white px-4 py-2.5 flex items-center justify-between">
-          <h2 className="font-bold text-sm tracking-wide uppercase flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-emerald-300" />
-            <span>Important Dates</span>
-          </h2>
+    <aside className="space-y-6 font-sans">
+      {/* 1. Quick Important Dates Box */}
+      <div className="border border-slate-400 bg-white">
+        <div className="bg-dlsu-800 text-white px-3 py-2 font-bold text-sm uppercase tracking-wider">
+          Important Deadlines
         </div>
-
-        <div className="p-4 divide-y divide-slate-150 text-xs">
-          {config.importantDates.map((item) => {
-            const isCameraReady = item.status === 'highlighted';
-            const isActive = item.status === 'active';
-            return (
-              <div key={item.id} className="py-2.5 first:pt-0 last:pb-0 space-y-0.5">
-                <div className="flex items-center justify-between gap-2">
-                  <span
-                    className={`font-bold ${
-                      isCameraReady
-                        ? 'text-red-700 font-extrabold'
-                        : isActive
-                        ? 'text-dlsu-800'
-                        : 'text-slate-900'
-                    }`}
-                  >
-                    {item.dateStr}
-                  </span>
-                  {isCameraReady && (
-                    <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-red-100 text-red-800 border border-red-300">
-                      Final
-                    </span>
-                  )}
-                  {isActive && (
-                    <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
-                      Active
-                    </span>
-                  )}
-                </div>
-                <div className="text-slate-700 font-medium">{item.title}</div>
+        <div className="p-3 divide-y divide-slate-200 text-xs sm:text-sm">
+          {config.importantDates.map((item) => (
+            <div key={item.id} className="py-2 first:pt-0 last:pb-0 space-y-0.5">
+              <div className="text-slate-900">
+                {item.isHighlight ? (
+                  <strong className="text-dlsu-800">{item.dateStr}</strong>
+                ) : (
+                  <strong>{item.dateStr}</strong>
+                )}
               </div>
-            );
-          })}
+              <div className="text-slate-700">{item.title}</div>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* 2. Paper Submission & Templates Box */}
-      <div className="bg-white border border-slate-300 rounded shadow-2xs overflow-hidden">
-        <div className="bg-slate-800 text-white px-4 py-2.5">
-          <h2 className="font-bold text-sm tracking-wide uppercase flex items-center gap-2">
-            <FileText className="w-4 h-4 text-slate-300" />
-            <span>Paper Submission</span>
-          </h2>
+      <div className="border border-slate-400 bg-white">
+        <div className="bg-slate-800 text-white px-3 py-2 font-bold text-sm uppercase tracking-wider">
+          Online Submission
         </div>
-
-        <div className="p-4 space-y-3.5 text-xs text-slate-700">
-          <p className="leading-relaxed">
-            All manuscripts must follow the two-column ACL formatting style (A4 size, max 6 pages) and be submitted via EasyChair.
+        <div className="p-3 space-y-3 text-xs sm:text-sm text-slate-800">
+          <p className="leading-snug">
+            Submissions must follow the two-column ACL format (max 6 pages).
           </p>
 
           <a
-            href={config.submission.submissionPortalUrl}
+            href={config.submissionGuidelines.portalUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded bg-dlsu-800 text-white font-bold text-xs hover:bg-dlsu-900 shadow-2xs"
+            className="block text-center px-3 py-2 bg-dlsu-800 hover:bg-dlsu-900 text-white font-bold text-xs uppercase tracking-wide border border-dlsu-900 transition-colors"
           >
-            <span>EasyChair Submission Portal</span>
-            <ExternalLink className="w-3.5 h-3.5" />
+            EasyChair Submission &rarr;
           </a>
 
-          <div className="pt-2 border-t border-slate-200 space-y-2">
-            <div className="font-semibold text-slate-900">Format Templates:</div>
-            <div className="space-y-1.5">
+          <div className="pt-2 border-t border-slate-200 space-y-1.5">
+            <div className="font-bold text-slate-900">Download Templates:</div>
+            <div>
               <a
-                href={config.submission.templateLatexUrl}
+                href={config.submissionGuidelines.templateLatexUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between p-2 rounded bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-800"
+                className="text-dlsu-800 font-bold underline hover:text-dlsu-900 block"
               >
-                <span className="font-medium">LaTeX Template (GitHub)</span>
-                <Download className="w-3.5 h-3.5 text-slate-500" />
+                &bull; LaTeX Style Files (GitHub)
               </a>
+            </div>
+            <div>
               <a
-                href={config.submission.templateDocxUrl}
+                href={config.submissionGuidelines.templateDocxUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between p-2 rounded bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-800"
+                className="text-dlsu-800 font-bold underline hover:text-dlsu-900 block"
               >
-                <span className="font-medium">Word Template (.docx)</span>
-                <Download className="w-3.5 h-3.5 text-slate-500" />
+                &bull; Word Template (.docx)
               </a>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 3. Conference Secretariat & Inquiries */}
-      <div className="bg-white border border-slate-300 rounded shadow-2xs overflow-hidden">
-        <div className="bg-slate-100 border-b border-slate-200 px-4 py-2 text-slate-800 font-bold text-xs uppercase tracking-wider">
-          Secretariat & Inquiries
+      {/* 3. Inquiries Box */}
+      <div className="border border-slate-400 bg-white">
+        <div className="bg-slate-100 border-b border-slate-300 px-3 py-2 font-bold text-xs uppercase tracking-wider text-slate-800">
+          Contact Secretariat
         </div>
-        <div className="p-4 space-y-2 text-xs text-slate-700">
-          <p className="font-medium text-slate-900">
-            Center for ICT for Development (CITE4D)
-          </p>
-          <p>De La Salle University, 2401 Taft Ave, Manila, Philippines</p>
-          <div className="pt-2 border-t border-slate-200 flex items-center gap-1.5">
-            <Mail className="w-3.5 h-3.5 text-dlsu-800 flex-shrink-0" />
+        <div className="p-3 space-y-1.5 text-xs text-slate-800">
+          <div className="font-bold">{config.contactPerson.name}</div>
+          <div>{config.contactPerson.department}</div>
+          <div className="pt-1">
+            <strong>Email: </strong>
             <a
-              href={`mailto:${config.contactEmail}`}
-              className="text-dlsu-800 font-semibold underline hover:text-dlsu-900 truncate"
+              href={`mailto:${config.contactPerson.email}`}
+              className="text-dlsu-800 font-bold underline"
             >
-              {config.contactEmail}
+              {config.contactPerson.email}
             </a>
+          </div>
+          <div>
+            <strong>Phone: </strong>{config.contactPerson.phone}
           </div>
         </div>
       </div>
 
-      {/* 4. Quick Admin Edit Box */}
-      <div className="bg-slate-50 border border-dashed border-slate-300 rounded p-3 text-xs text-slate-600 space-y-2">
-        <div className="font-semibold text-slate-800 flex items-center gap-1.5">
-          <Settings className="w-3.5 h-3.5 text-slate-500" />
-          <span>Conference Organizer Admin</span>
+      {/* 4. Quick Admin CMS Box */}
+      <div className="border border-slate-300 bg-slate-50 p-3 space-y-2 text-xs">
+        <div className="font-bold text-slate-800 uppercase">
+          Organizer Admin
         </div>
-        <p className="text-xs leading-normal text-slate-600 text-pretty">
-          Modify dates, scope topics, templates, fees, and text anytime without editing raw code.
+        <p className="text-slate-600">
+          Update dates, scope topics, schedule, fees, and details live.
         </p>
         <button
           type="button"
           onClick={() => setIsAdminOpen(true)}
-          className="w-full py-1.5 px-3 rounded bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 font-semibold text-xs text-center"
+          className="w-full py-1.5 bg-white border border-slate-400 hover:bg-slate-100 text-slate-800 font-bold text-xs"
         >
-          Open Admin Editor
+          Open Admin CMS
         </button>
       </div>
     </aside>

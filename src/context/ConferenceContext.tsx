@@ -1,21 +1,15 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { ConferenceConfig, ImportantDate, ScopeCategory, SubmissionDetails, RegistrationTier } from '../types/conference';
+import React, { createContext, useContext, useState } from 'react';
+import { ConferenceConfig } from '../types/conference';
 import { defaultConferenceData } from '../data/defaultConferenceData';
 
-const STORAGE_KEY = 'CITAS_2027_CONFERENCE_CONFIG_V1';
+const STORAGE_KEY = 'CITAS_2027_SIBR_CONFIG_V2';
 
 interface ConferenceContextType {
   config: ConferenceConfig;
   isAdminOpen: boolean;
   setIsAdminOpen: (open: boolean) => void;
   saveNotice: string | null;
-  updateGeneralInfo: (info: Partial<ConferenceConfig>) => void;
-  updateNoticeBanner: (banner: ConferenceConfig['noticeBanner']) => void;
-  updateImportantDates: (dates: ImportantDate[]) => void;
-  updateScopeCategories: (categories: ScopeCategory[]) => void;
-  updateSubmission: (submission: SubmissionDetails) => void;
-  updateRegistrationTiers: (tiers: RegistrationTier[]) => void;
-  updateVenue: (venue: ConferenceConfig['venueFull'], venueBrief: string) => void;
+  updateConfig: (updated: Partial<ConferenceConfig>, msg?: string) => void;
   resetToDefault: () => void;
   exportConfigAsJSON: () => void;
   importConfigFromJSON: (file: File) => Promise<{ success: boolean; message: string }>;
@@ -29,11 +23,12 @@ export const ConferenceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        // Ensure schema compatibility
-        return { ...defaultConferenceData, ...parsed };
+        if (parsed.version === 2) {
+          return { ...defaultConferenceData, ...parsed };
+        }
       }
     } catch (e) {
-      console.warn('Could not read saved CITAS configuration from localStorage', e);
+      console.warn('Could not read saved config', e);
     }
     return defaultConferenceData;
   });
@@ -57,39 +52,15 @@ export const ConferenceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }
   };
 
-  const updateGeneralInfo = (info: Partial<ConferenceConfig>) => {
-    saveConfig({ ...config, ...info }, 'Conference details updated');
-  };
-
-  const updateNoticeBanner = (banner: ConferenceConfig['noticeBanner']) => {
-    saveConfig({ ...config, noticeBanner: banner }, 'Banner settings updated');
-  };
-
-  const updateImportantDates = (importantDates: ImportantDate[]) => {
-    saveConfig({ ...config, importantDates }, 'Timeline dates updated');
-  };
-
-  const updateScopeCategories = (scopeCategories: ScopeCategory[]) => {
-    saveConfig({ ...config, scopeCategories }, 'Scope and tracks updated');
-  };
-
-  const updateSubmission = (submission: SubmissionDetails) => {
-    saveConfig({ ...config, submission }, 'Submission guidelines updated');
-  };
-
-  const updateRegistrationTiers = (registrationTiers: RegistrationTier[]) => {
-    saveConfig({ ...config, registrationTiers }, 'Registration tiers updated');
-  };
-
-  const updateVenue = (venueFull: ConferenceConfig['venueFull'], venueBrief: string) => {
-    saveConfig({ ...config, venueFull, venueBrief }, 'Venue information updated');
+  const updateConfig = (updated: Partial<ConferenceConfig>, msg = 'Conference details updated') => {
+    saveConfig({ ...config, ...updated }, msg);
   };
 
   const resetToDefault = () => {
-    if (window.confirm('Reset all details back to the original default CITAS 2027 data? All local custom edits will be replaced.')) {
+    if (window.confirm('Reset all details back to the official CITAS 2027 proposal defaults?')) {
       localStorage.removeItem(STORAGE_KEY);
       setConfig(defaultConferenceData);
-      setSaveNotice('Restored default conference configuration');
+      setSaveNotice('Restored official conference defaults');
       setTimeout(() => setSaveNotice(null), 3500);
     }
   };
@@ -117,10 +88,10 @@ export const ConferenceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             resolve({ success: false, message: 'Invalid config file: missing conference name or acronym.' });
             return;
           }
-          saveConfig({ ...defaultConferenceData, ...parsed }, 'Imported configuration successfully');
+          saveConfig({ ...defaultConferenceData, ...parsed, version: 2 }, 'Configuration loaded successfully');
           resolve({ success: true, message: 'Configuration loaded successfully.' });
         } catch (err) {
-          resolve({ success: false, message: 'JSON parsing error: file is corrupted or not valid JSON.' });
+          resolve({ success: false, message: 'JSON parsing error: file is invalid or corrupted.' });
         }
       };
       reader.onerror = () => {
@@ -137,13 +108,7 @@ export const ConferenceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         isAdminOpen,
         setIsAdminOpen,
         saveNotice,
-        updateGeneralInfo,
-        updateNoticeBanner,
-        updateImportantDates,
-        updateScopeCategories,
-        updateSubmission,
-        updateRegistrationTiers,
-        updateVenue,
+        updateConfig,
         resetToDefault,
         exportConfigAsJSON,
         importConfigFromJSON,

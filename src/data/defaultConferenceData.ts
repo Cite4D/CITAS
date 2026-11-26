@@ -1,254 +1,306 @@
 import { ConferenceConfig } from '../types/conference';
 
 export const defaultConferenceData: ConferenceConfig = {
-  version: 1,
+  version: 2,
   lastUpdated: new Date().toISOString(),
   acronym: 'CITAS 2027',
-  edition: '2027',
-  fullName: 'Conference on Innovation, Technology, and Analytics for Society',
-  tagline: 'Bridging Intelligent Technologies, Data Analytics, and Societal Transformation',
+  fullName: 'International Conference on Innovation, Technology, and Analytics for Society',
   datesText: 'February 16 to 18, 2027',
-  mainConferenceDate: 'Wednesday, February 17, 2027',
   venueBrief: 'De La Salle University, Manila, Philippines',
-  noticeBanner: {
-    enabled: true,
-    text: 'Call for Papers is now open! Initial submissions are due on November 20, 2026 via EasyChair.',
-    type: 'info'
-  },
-  introductionParagraphs: [
-    '(CITAS 2027) will be held on February 16-18, 2027, at De La Salle University, Manila, Philippines, with the main conference on Wednesday, February 17, 2027. CITAS 2027 is organized by Center for ICT for Development (CITE4D), and The Advanced Research Institute for Informatics, Computing, and Networking (AdRIC), De La Salle University.'
+  venueDetailed: 'Pardo Hall, HS Building, De La Salle University, 2401 Taft Avenue, Malate, Manila, Philippines (Venue is tentative pending confirmation).',
+  backgroundText: [
+    'The International Conference on Innovation, Technology and Analytics for Society (CITAS) 2027 is a three-day academic conference to be held on February 16 to 18, 2027 at De La Salle University, Manila, Philippines.',
+    'The conference will gather faculty, researchers, students, and representatives of partner institutions to share work on innovation, technology, and analytics and their application specifically to society. It will also serve as a venue for students and aspiring researchers to present their research and capstone projects to an external audience.'
   ],
-  aimsParagraphs: [
-    'The aim of the conference is to enhance international academic exchange on intelligent technologies and their emerging applications, and to provide a chance for communication among academics, scientists, engineers, and practitioners.',
-    'Researchers from around the globe are invited to present original contributions, share pioneering research, and engage in high-impact interdisciplinary discussions on computing and analytics for societal progress.'
+  objectives: [
+    'Provide a forum for the presentation and discussion of research and applied work in innovation, technology, and analytics.',
+    'Strengthen linkages with local and international academic, government, and industry partners.',
+    'Give students, particularly BSIT / BSIS / MSIT capstone and research teams, the opportunity to present before invited guests and professionals.',
+    'Host visiting guests through a welcome dinner and a technical workshop.'
   ],
-  organizers: [
-    {
-      id: 'cite4d',
-      name: 'Center for ICT for Development (CITE4D)',
-      role: 'Lead Co-Organizer',
-      institution: 'De La Salle University',
-      websiteUrl: 'https://cite4d.com'
-    },
-    {
-      id: 'adric',
-      name: 'The Advanced Research Institute for Informatics, Computing, and Networking (AdRIC)',
-      role: 'Lead Co-Organizer',
-      institution: 'De La Salle University',
-      websiteUrl: 'https://www.dlsu.edu.ph/research/research-centers/adric/'
-    },
-    {
-      id: 'dlsu-ccs',
-      name: 'College of Computer Studies',
-      role: 'Host Institution',
-      institution: 'De La Salle University',
-      websiteUrl: 'https://www.dlsu.edu.ph/colleges/ccs/'
-    }
-  ],
+  publicationNote: 'This conference will handle full papers, extended abstracts, and posters with possible publication at the Philippine Computing Journal in cooperation with editor Mr. Nathaniel Oco.',
   importantDates: [
     {
       id: 'd1',
-      dateStr: 'November 20, 2026',
-      title: 'Submission Deadline',
-      description: 'Initial manuscript submission via EasyChair system.',
-      status: 'active',
-      iconType: 'document'
+      dateStr: 'December 18, 2026 (Friday)',
+      title: 'Deadline for Paper Submission',
+      notes: 'Initial manuscript submission via EasyChair system.',
+      isHighlight: true
     },
     {
       id: 'd2',
-      dateStr: 'December 7, 2026',
+      dateStr: 'January 08, 2027 (Friday)',
       title: 'Notification of Acceptance',
-      description: 'Review outcome notices and reviewer feedback released to authors.',
-      status: 'upcoming',
-      iconType: 'check'
+      notes: 'Review outcomes and reviewers feedback released to authors.'
     },
     {
       id: 'd3',
-      dateStr: 'January 4, 2027',
-      title: 'Registration Deadline',
-      description: 'Early bird and author conference registration closes.',
-      status: 'upcoming',
-      iconType: 'card'
+      dateStr: 'January 15, 2027 (Friday)',
+      title: 'Deadline for Registration',
+      notes: 'Author and participant registration deadline.'
     },
     {
       id: 'd4',
-      dateStr: 'January 4, 2027',
+      dateStr: 'January 29, 2027 (Friday)',
       title: 'Full Paper Final Submission (Camera-Ready)',
-      description: 'Camera-ready copies incorporating reviewer revisions due.',
-      status: 'highlighted',
-      iconType: 'pencil'
+      notes: 'Final camera-ready copies incorporating reviewer revisions due.',
+      isHighlight: true
     },
     {
       id: 'd5',
-      dateStr: 'February 16, 2027',
-      title: 'Pre-Conference Workshops',
-      description: 'Doctoral consortium, technical tutorials, and campus reception.',
-      status: 'upcoming',
-      iconType: 'calendar'
+      dateStr: 'February 16, 2027 (Tuesday)',
+      title: 'Day 1: Welcome Remarks & International Dinner',
+      notes: '5:30 PM — Welcome remarks and dinner with international guests.'
     },
     {
       id: 'd6',
-      dateStr: 'February 17, 2027',
-      title: 'Main Conference Day (DLSU)',
-      description: 'Keynote addresses, oral parallel paper tracks, and poster sessions.',
-      status: 'highlighted',
-      iconType: 'calendar'
+      dateStr: 'February 17, 2027 (Wednesday)',
+      title: 'Day 2: Main Conference Paper & Poster Presentations',
+      notes: 'Whole day oral parallel sessions, keynote lectures, student posters, and awarding.',
+      isHighlight: true
     },
     {
       id: 'd7',
-      dateStr: 'February 18, 2027',
-      title: 'Special Sessions & Awards',
-      description: 'Industry colloquium, best paper awards, and closing banquet.',
-      status: 'upcoming',
-      iconType: 'award'
+      dateStr: 'February 18, 2027 (Thursday)',
+      title: 'Day 3: Technical Workshop & Cultural Tour',
+      notes: 'Technical visit to Philippine Port Authority and cultural tour at Intramuros.'
     }
   ],
-  scopeCategories: [
+  programSchedule: [
     {
-      id: 'ai-core',
-      name: 'Artificial Intelligence & Intelligent Systems',
-      description: 'Core theories, machine learning models, neuro-fuzzy systems, and intelligent reasoning architectures.',
-      topics: [
-        'Artificial Intelligence and Expert Systems',
-        'Machine Learning and Deep Learning',
-        'Neural Networks',
-        'Hybrid Intelligent Systems',
-        'Knowledge-Based Systems',
-        'Knowledge Discovery and Data Mining',
-        'Learning Systems',
-        'Fuzzy Systems and Rough Sets',
-        'Fuzzy Optimization and Decision Making',
-        'Human-Machine Learning'
+      dayTitle: 'Day 1: Welcome Dinner',
+      dateStr: 'February 16, 2027 (Tuesday)',
+      items: [
+        {
+          time: '5:30 PM',
+          description: 'Welcome Program and Networking Dinner',
+          details: [
+            'Welcome remarks by De La Salle University organizers',
+            'Dinner with visiting international guests and institutional partners'
+          ]
+        }
       ]
     },
     {
-      id: 'analytics-decision',
-      name: 'Big Data, Analytics & Optimization',
-      description: 'Data architectures, process discovery, mathematical optimization, and advanced decision intelligence.',
-      topics: [
-        'Big Data Analytics and Applications',
-        'Decision Support Systems',
-        'Information Theory and Applications',
-        'Intelligent Information Systems',
-        'Process Mining and Process Analytics',
-        'Optimization Techniques',
-        'Optimal, Adaptive, Predictive Control'
+      dayTitle: 'Day 2: Main Conference Proper (Whole Day)',
+      dateStr: 'February 17, 2027 (Wednesday)',
+      items: [
+        {
+          time: '08:00 - 09:00 AM',
+          description: 'Registration & Morning Coffee'
+        },
+        {
+          time: '09:00 - 10:00 AM',
+          description: 'Opening Program & Keynotes',
+          details: [
+            'Remarks from the Organizing Committee from De La Salle University, Manila, Philippines',
+            'Invited Speaker (1): Dr. Jaehun Park, Changwon National University, South Korea',
+            'Invited Speaker (2): Dr. Santoso Wibowo, CQUniversity, Australia'
+          ]
+        },
+        {
+          time: '10:00 - 11:30 AM',
+          description: 'Oral Presentations for Full Papers (Parallel Sessions)'
+        },
+        {
+          time: '11:30 - 12:00 NN',
+          description: 'Keynote Address',
+          details: [
+            'Invited Speaker: Representative from DOST - Advanced Science and Technology Institute (ASTI)'
+          ]
+        },
+        {
+          time: '12:00 - 1:00 PM',
+          description: 'Lunch Break & Networking'
+        },
+        {
+          time: '1:00 - 2:00 PM',
+          description: 'Afternoon Keynotes',
+          details: [
+            'Invited Speaker (3): Dr. Norshuhani Zamin, UNITEN, Malaysia',
+            'Invited Speaker (4): Mr. Nardo Manoloto, CEO and Co-Founder Quantum Frontiers PH'
+          ]
+        },
+        {
+          time: '2:00 - 3:30 PM',
+          description: 'Oral Presentations for Full Papers and Extended Abstracts (Parallel Sessions)'
+        },
+        {
+          time: '3:30 - 5:00 PM',
+          description: 'Poster Presentations for Ongoing Student Research',
+          details: [
+            'Presentations by DLSU BSIT/BSIS/MSIT capstone and research teams'
+          ]
+        },
+        {
+          time: '5:00 - 6:00 PM',
+          description: 'Closing Remarks & Awarding Ceremony',
+          details: [
+            'Best Paper Award and Best Student Presentation recognition'
+          ]
+        },
+        {
+          time: '6:00 PM',
+          description: 'Conference Dinner'
+        }
       ]
     },
     {
-      id: 'cyberphysical-iot',
-      name: 'Cyber-Physical, IoT & Smart Energy',
-      description: 'Sensors, robotics, autonomous control, industrial automation, and sustainable energy grids.',
-      topics: [
-        'Intelligent Systems for IoT',
-        'Smart Manufacturing and IoT',
-        'Electric Vehicles and Smart Energy Systems',
-        'Power Systems',
-        'Real-Time Systems',
-        'Fault Detection',
-        'Robotics and Motion Control'
-      ]
-    },
-    {
-      id: 'applications-society',
-      name: 'Societal Applications, Mobility & Cloud',
-      description: 'Translating computing innovations into societal impact, mobility solutions, and connected infrastructure.',
-      topics: [
-        'Image and Speech Signal Processing',
-        'Guidance and Navigation Systems',
-        'Transportation Control and Applications',
-        'Transportation Information Engineering',
-        'Web Services and Cloud Computing',
-        'Human Science for Intelligent Systems'
+      dayTitle: 'Day 3: Technical Visit & Cultural Tour',
+      dateStr: 'February 18, 2027 (Thursday)',
+      items: [
+        {
+          time: '9:00 - 11:30 AM',
+          description: 'Technical Visit to Philippine Port Authority (PMO NCR North)'
+        },
+        {
+          time: '11:30 - 1:30 PM',
+          description: 'Lunch and Cultural Tour at Historic Intramuros for International Guests'
+        }
       ]
     }
   ],
-  submission: {
-    submissionPortalName: 'EasyChair Conference System',
-    submissionPortalUrl: 'https://easychair.org/conferences/?conf=ailric2027',
-    formatName: 'ACL Two-Column Format (A4 Size)',
+  invitedSpeakers: [
+    {
+      name: 'Dr. Jaehun Park',
+      affiliation: 'Changwon National University, South Korea',
+      topicOrRole: 'Invited Keynote Speaker'
+    },
+    {
+      name: 'Dr. Santoso Wibowo',
+      affiliation: 'CQUniversity, Australia',
+      topicOrRole: 'Invited Keynote Speaker'
+    },
+    {
+      name: 'Representative from DOST-ASTI',
+      affiliation: 'Advanced Science and Technology Institute, Department of Science and Technology',
+      topicOrRole: 'Government Technology Keynote'
+    },
+    {
+      name: 'Dr. Norshuhani Zamin',
+      affiliation: 'Universiti Tenaga Nasional (UNITEN), Malaysia',
+      topicOrRole: 'Invited Keynote Speaker'
+    },
+    {
+      name: 'Mr. Nardo Manoloto',
+      affiliation: 'CEO and Co-Founder, Quantum Frontiers PH',
+      topicOrRole: 'Industry Keynote Speaker'
+    }
+  ],
+  invitedPartners: [
+    'Changwon National University, South Korea',
+    'Universiti Tenaga Nasional (UNITEN), Malaysia',
+    'CQUniversity, Australia',
+    'Cybersec Clinic PH / The Asia Foundation',
+    'DOST - Advanced Science and Technology Institute (ASTI)',
+    'Bangko Sentral ng Pilipinas (BSP)',
+    'Quantum Frontiers PH',
+    'Philippine Port Authority (PPA)',
+    'Philippine Society of Information Technology Educators (PSITE)'
+  ],
+  committeeLeadership: [
+    {
+      role: 'Program and Operation Chair',
+      name: 'Dr. Raphael Gonda',
+      affiliation: 'De La Salle University, Philippines'
+    },
+    {
+      role: 'General Chair',
+      name: 'Dr. Ryan Ebardo',
+      affiliation: 'De La Salle University, Philippines'
+    },
+    {
+      role: 'Co-Chair',
+      name: 'Dr. Jaehun Park',
+      affiliation: 'Changwon National University, South Korea'
+    },
+    {
+      role: 'Co-Chair',
+      name: 'Dr. Santoso Wibowo',
+      affiliation: 'CQUniversity, Australia'
+    }
+  ],
+  committeeMembers: [
+    { name: 'Dr. Si-Il Sung', affiliation: 'Kyonggi University, South Korea' },
+    { name: 'Dr. Norshuhani Zamin', affiliation: 'UNITEN, Malaysia' },
+    { name: 'Dr. Marnel Peradilla', affiliation: 'De La Salle University, Philippines' },
+    { name: 'Dylan Josh Lopez', affiliation: 'Chung Hua University, Taiwan' },
+    { name: 'Roger Luis Uy', affiliation: 'De La Salle University, Philippines' },
+    { name: 'John Byron Tuazon', affiliation: 'De La Salle University, Philippines' },
+    { name: 'Oliver Malabanan', affiliation: 'De La Salle University, Philippines' }
+  ],
+  topics: [
+    'Artificial intelligence and expert systems',
+    'Big data analytics and applications',
+    'Decision support systems',
+    'Electric vehicles and smart energy systems',
+    'Fault detection',
+    'Fuzzy systems and rough sets',
+    'Fuzzy optimization and decision making',
+    'Guidance and navigation systems',
+    'Human-machine learning',
+    'Human science for intelligent systems',
+    'Hybrid intelligent systems',
+    'Image and speech signal processing',
+    'Information theory and applications',
+    'Intelligent information systems',
+    'Intelligent systems for IoT',
+    'Knowledge-based systems',
+    'Knowledge discovery and data mining',
+    'Learning systems',
+    'Machine learning and deep learning',
+    'Neural networks',
+    'Optimal, adaptive, predictive control',
+    'Optimization techniques',
+    'Power systems',
+    'Process mining and process analytics',
+    'Quantum computing and applications',
+    'Real-time systems',
+    'Robotics and motion control',
+    'Signal and image processing',
+    'Smart manufacturing and IoT',
+    'Transportation control and applications',
+    'Transportation information engineering',
+    'Web services and cloud computing'
+  ],
+  registrationFees: [
+    {
+      participantType: 'Local participant - paper / poster presenter (student)',
+      amount: 'PHP 2,500.00',
+      notes: 'Requires valid student ID / verification'
+    },
+    {
+      participantType: 'Local participant - paper / poster presenter (professional)',
+      amount: 'PHP 5,000.00',
+      notes: 'Faculty, industry practitioners, and researchers'
+    },
+    {
+      participantType: 'International participant - paper / poster presenter (students / professors)',
+      amount: 'USD 150.00',
+      notes: 'Foreign delegates and authors'
+    }
+  ],
+  registrationNote: 'DLSU student participants who are not paper or poster presenters can participate in the event free of charge.',
+  submissionGuidelines: {
+    formatName: 'Two-Column ACL Format (A4 Size)',
     pageLimit: 'Up to six (6) pages of content, excluding references and appendices',
-    guidelinesSummary: 'Submissions should describe unpublished completed original work. Authors intending to submit should follow the two-column ACL format. Please note that CITAS is not an ACL event; the ACL template is adopted solely for formatting consistency.',
+    summary: 'Submissions should describe unpublished completed original work. Authors intending to submit should follow the two-column ACL format. Please note that CITAS is not an ACL event; the ACL template is adopted solely for formatting consistency.',
     templateLatexUrl: 'https://github.com/acl-org/acl-style-files',
     templateDocxUrl: 'https://2023.aclweb.org/calls/style_and_formatting/',
-    blindReviewNotes: 'No page number should appear in the paper. Submissions will be judged based on relevance, technical strength, significance, opportunities, and interest to the attendees. As the reviewing will be double-blind, authors must NOT indicate their names and affiliations in the submitted papers.',
-    presentationNotes: 'Accepted papers will be presented orally or as posters as determined by the committee. Oral papers and abstracts of poster papers will be included in the official proceedings.'
+    portalUrl: 'https://easychair.org/conferences/?conf=ailric2027',
+    blindReviewRules: [
+      'No page number should appear in the paper.',
+      'Submissions will be judged based on relevance, technical strength, significance, opportunities, and interest to attendees.',
+      'As reviewing will be double-blind, authors must not indicate their names and affiliations in the submitted papers.',
+      'Accepted papers will be presented orally or as posters as determined by the committee. Oral papers and abstracts of poster papers will be included in the proceedings.'
+    ]
   },
-  registrationTiers: [
-    {
-      id: 'local-author',
-      name: 'Philippine Author (Regular)',
-      category: 'Local (PHP)',
-      earlyBirdRate: 'PHP 8,500',
-      regularRate: 'PHP 10,000',
-      perks: [
-        'Full access to all 3-day tracks and keynotes',
-        'Publication of 1 accepted paper in proceedings',
-        'Official conference kit & printed program',
-        'Lunch, morning & afternoon coffee breaks',
-        'Certificate of Oral/Poster Presentation'
-      ],
-      isPopular: true
-    },
-    {
-      id: 'local-student',
-      name: 'Philippine Student Author',
-      category: 'Local (PHP)',
-      earlyBirdRate: 'PHP 6,000',
-      regularRate: 'PHP 7,500',
-      perks: [
-        'Requires valid student ID / verification',
-        'Full access to all technical sessions',
-        'Publication of 1 student-authored paper',
-        'Conference kit & certificates',
-        'Meals and refreshments included'
-      ]
-    },
-    {
-      id: 'intl-author',
-      name: 'International Author',
-      category: 'International (USD)',
-      earlyBirdRate: 'USD 350',
-      regularRate: 'USD 420',
-      perks: [
-        'Full access to all technical & keynote sessions',
-        'Publication of 1 paper in official proceedings',
-        'Gala banquet dinner invitation',
-        'Conference delegate kit & certificate',
-        'Campus tour of historic DLSU St. La Salle Hall'
-      ],
-      isPopular: true
-    },
-    {
-      id: 'non-author',
-      name: 'General Attendee / Observer',
-      category: 'Local (PHP)',
-      earlyBirdRate: 'PHP 4,500',
-      regularRate: 'PHP 5,500',
-      perks: [
-        'Access to all open oral presentations and exhibitions',
-        'Conference badge & delegate folder',
-        'Daily snacks and networking coffee sessions',
-        'Certificate of Attendance'
-      ]
-    }
-  ],
-  venueFull: {
-    campus: 'De La Salle University (Manila Campus)',
-    building: 'St. La Salle Hall / Henry Sy Sr. Hall',
-    address: '2401 Taft Avenue, Malate',
-    city: 'Manila 1004, Philippines',
-    coordinates: {
-      lat: 14.5647,
-      lng: 120.9932
-    },
-    directionsGuide: {
-      airport: 'From Ninoy Aquino International Airport (NAIA Terminals 1, 2, 3), DLSU Manila is approximately 8 km north (25–40 minutes via NAIA Expressway / Metro Manila Skyway to Quirino or Buendia exit). Metered and Grab taxis are readily available at airport arrivals.',
-      transit: 'DLSU is directly accessible via the LRT-1 (Light Rail Transit Line 1). Alight at Vito Cruz Station, which is situated directly in front of the university entrance along Taft Avenue.',
-      landmarks: 'Situated along Taft Avenue, directly across from University Mall and adjacent to the Rizal Memorial Sports Complex.'
-    },
-    mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.3409176378453!2d120.99066617618035!3d14.564687077609277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c97800000001%3A0x6b8ec434460f38b0!2sDe%20La%20Salle%20University!5e0!3m2!1sen!2sph!4v1700000000000!5m2!1sen!2sph'
-  },
-  contactEmail: 'cite4d@dlsu.edu.ph',
-  emergencyContact: '+63 (2) 8524-4611 loc. 300'
+  contactPerson: {
+    name: 'Raphael Wilwayco Gonda, PhD',
+    title: 'Research Head, Center for ICT for Development (CITE4D) & Assistant Professor',
+    department: 'Department of Information Technology, College of Computer Studies',
+    institution: 'De La Salle University - Manila',
+    phone: '+63962-045-3891',
+    email: 'cite4d@dlsu.edu.ph'
+  }
 };
