@@ -7,6 +7,7 @@
     "dev": "vite",
     "dev:host": "vite --host 0.0.0.0",
     "build": "tsc && vite build",
+    "build:docs": "tsc && vite build && node -e \"const fs=require('fs'); fs.rmSync('docs', {recursive:true, force:true}); fs.cpSync('dist', 'docs', {recursive:true}); fs.writeFileSync('docs/.nojekyll', ''); console.log('✓ Synced dist to docs/ with .nojekyll');\"",
     "preview": "vite preview --host 0.0.0.0 --port 4173"
   },
   "dependencies": {
