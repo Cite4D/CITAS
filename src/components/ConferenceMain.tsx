@@ -225,16 +225,13 @@ export const ConferenceMain: React.FC = () => {
         </div>
       </section>
 
-      {/* VII. INVITED GUESTS & PARTNER INSTITUTIONS */}
+      {/* VII. INVITED KEYNOTE SPEAKERS */}
       <section id="partners" className="space-y-6">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-dlsu-900 border-b-2 border-dlsu-800 pb-2 uppercase tracking-wide">
-          Invited Guests & Partner Institutions
+          Invited Keynote Speakers
         </h2>
 
         <div className="space-y-4 max-w-[68ch]">
-          <h3 className="text-xl font-bold text-slate-900">
-            Invited Keynote Speakers:
-          </h3>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse border border-slate-400 text-sm sm:text-base">
               <thead>
@@ -261,17 +258,6 @@ export const ConferenceMain: React.FC = () => {
               </tbody>
             </table>
           </div>
-        </div>
-
-        <div className="space-y-3 pt-2 max-w-[68ch]">
-          <h3 className="text-xl font-bold text-slate-900">
-            Invited Partner Organizations:
-          </h3>
-          <ol className="list-decimal list-outside ml-6 space-y-1 text-slate-900 text-base leading-relaxed">
-            {config.invitedPartners.map((pt, idx) => (
-              <li key={idx}>{pt}</li>
-            ))}
-          </ol>
         </div>
       </section>
 

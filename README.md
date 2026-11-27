@@ -19,7 +19,7 @@
 - [Topics of Interest (Call for Papers)](#topics-of-interest)
 - [Paper Submission Guidelines](#paper-submission-guidelines)
 - [Registration Fees](#registration-fees)
-- [Invited Keynote Speakers & Partners](#invited-keynote-speakers--partners)
+- [Invited Keynote Speakers](#invited-keynote-speakers)
 - [Venue](#venue)
 - [Contact Secretariat](#contact-secretariat)
 - [How to Enable GitHub Pages Backup](#how-to-enable-github-pages-backup)
@@ -148,25 +148,13 @@ Submissions should describe unpublished completed original work. Authors intendi
 
 ---
 
-## Invited Keynote Speakers & Partners
+## Invited Keynote Speakers
 
-### Keynote Speakers:
 - **TBA** &mdash; Changwon National University, South Korea (*Invited Keynote Speaker*)
 - **TBA** &mdash; CQUniversity, Australia (*Invited Keynote Speaker*)
 - **TBA** &mdash; Advanced Science and Technology Institute, DOST (*Government Technology Keynote*)
 - **TBA** &mdash; Universiti Tenaga Nasional (UNITEN), Malaysia (*Invited Keynote Speaker*)
 - **TBA** &mdash; CEO & Co-Founder, Quantum Frontiers PH (*Industry Keynote Speaker*)
-
-### Partner Organizations:
-1. Changwon National University, South Korea
-2. Universiti Tenaga Nasional (UNITEN), Malaysia
-3. CQUniversity, Australia
-4. Cyberlynx Clinic PH / 17+ Asia Foundation
-5. DOST &ndash; Advanced Science and Technology Institute (ASTI)
-6. Bangko Sentral ng Pilipinas (BSP)
-7. Quantum Frontiers PH
-8. Philippine Port Authority (PPA)
-9. Philippine Society of Information Technology Educators (PSITE)
 
 ---
 
