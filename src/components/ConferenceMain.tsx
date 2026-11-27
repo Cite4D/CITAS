@@ -282,7 +282,7 @@ export const ConferenceMain: React.FC = () => {
         </h2>
 
         <p className="text-slate-900 text-base sm:text-lg leading-relaxed max-w-[65ch]">
-          {config.venueBrief}
+          {config.venueDetailed}
         </p>
       </section>
 

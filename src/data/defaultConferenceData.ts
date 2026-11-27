@@ -1,13 +1,13 @@
 import { ConferenceConfig } from '../types/conference';
 
 export const defaultConferenceData: ConferenceConfig = {
-  version: 4,
+  version: 5,
   lastUpdated: new Date().toISOString(),
   acronym: 'CITAS 2027',
   fullName: 'International Conference on Innovation, Technology, and Analytics for Society',
   datesText: 'February 16 to 18, 2027',
   venueBrief: 'De La Salle University',
-  venueDetailed: 'De La Salle University',
+  venueDetailed: 'De La Salle University, 2401 Taft Avenue, Malate, Manila 1004, Philippines',
   backgroundText: [
     'The International Conference on Innovation, Technology and Analytics for Society (CITAS) 2027 is a three-day academic conference to be held on February 16 to 18, 2027 at De La Salle University, Manila, Philippines.',
     'The conference will gather faculty, researchers, students, and representatives of partner institutions to share work on innovation, technology, and analytics and their application specifically to society. It will also serve as a venue for students and aspiring researchers to present their research and capstone projects to an external audience.'

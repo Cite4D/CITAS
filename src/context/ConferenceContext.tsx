@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { ConferenceConfig } from '../types/conference';
 import { defaultConferenceData } from '../data/defaultConferenceData';
 
-const STORAGE_KEY = 'CITAS_2027_SIBR_CONFIG_V4';
+const STORAGE_KEY = 'CITAS_2027_SIBR_CONFIG_V5';
 
 interface ConferenceContextType {
   config: ConferenceConfig;
@@ -23,7 +23,7 @@ export const ConferenceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        if (parsed.version === 4) {
+        if (parsed.version === 5) {
           return { ...defaultConferenceData, ...parsed };
         }
       }

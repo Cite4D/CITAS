@@ -172,7 +172,7 @@ Submissions should describe unpublished completed original work. Authors intendi
 
 ## Venue
 
-De La Salle University
+De La Salle University, 2401 Taft Avenue, Malate, Manila 1004, Philippines
 
 ---
 
