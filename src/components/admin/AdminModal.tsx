@@ -424,7 +424,7 @@ export const AdminModal: React.FC = () => {
             <form onSubmit={handleSaveSubmission} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
-                  EasyChair Conference Submission URL
+                  Online Submission Form URL (Google Forms)
                 </label>
                 <input
                   type="url"

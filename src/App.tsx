@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { ConferenceProvider, useConference } from './context/ConferenceContext';
 import { Navbar } from './components/Navbar';
+import { ParallaxHero } from './components/ParallaxHero';
 import { ConferenceMain } from './components/ConferenceMain';
 import { ConferenceSidebar } from './components/ConferenceSidebar';
 import { Footer } from './components/Footer';
@@ -26,8 +27,11 @@ const ConferencePortal: React.FC = () => {
 
   return (
     <div id="home" className="min-h-screen flex flex-col bg-white text-[#1a1a1a]">
-      {/* Top Academic Navigation & Masthead */}
+      {/* Top Academic Institutional Bar & Navigation */}
       <Navbar />
+
+      {/* Opening Viewport: Parallax Manila Skyline with Important Dates & Submission */}
+      <ParallaxHero />
 
       {/* Main 2-Column Content Layout (SIBR / IEEE Academic Conference Standard) */}
       <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 sm:py-8">

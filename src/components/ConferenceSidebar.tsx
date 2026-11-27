@@ -46,7 +46,7 @@ export const ConferenceSidebar: React.FC = () => {
               rel="noopener noreferrer"
               className="font-bold text-sm text-dlsu-900 hover:text-black underline block"
             >
-              &rarr; Submit via EasyChair
+              &rarr; Submit Paper (Google Form)
             </a>
           </div>
 

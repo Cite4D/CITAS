@@ -1,7 +1,7 @@
 # CITAS 2027
 ### International Conference on Innovation, Technology, and Analytics for Society
 **February 16 to 18, 2027** | **Main Conference: Wednesday, February 17, 2027**  
-**Venue:** Pardo Hall, HS Building, De La Salle University, 2401 Taft Avenue, Malate, Manila, Philippines  
+**Venue:** De La Salle University  
 **Official Domain:** [cite4d.com/citas](http://cite4d.com/citas)  
 **Hosted by:** De La Salle University &bull; College of Computer Studies &bull; Center for ICT for Development (CITe4D) &bull; AdRIC
 
@@ -20,8 +20,7 @@
 - [Paper Submission Guidelines](#paper-submission-guidelines)
 - [Registration Fees](#registration-fees)
 - [Invited Keynote Speakers & Partners](#invited-keynote-speakers--partners)
-- [Organizing Committee](#organizing-committee)
-- [Venue & Accessibility](#venue--accessibility)
+- [Venue](#venue)
 - [Contact Secretariat](#contact-secretariat)
 - [How to Enable GitHub Pages Backup](#how-to-enable-github-pages-backup)
 
@@ -31,7 +30,7 @@
 
 | Milestone / Event | Date | Notes |
 | :--- | :--- | :--- |
-| **Initial Paper Submission Deadline** | **December 18, 2026 (Friday)** | Initial manuscript submission via EasyChair system |
+| **Initial Paper Submission Deadline** | **December 18, 2026 (Friday)** | Initial manuscript submission via Google Form |
 | **Notification of Acceptance** | **January 08, 2027 (Friday)** | Review outcomes and reviewers' feedback released |
 | **Author Registration Deadline** | **January 15, 2027 (Friday)** | Author and participant registration deadline |
 | **Camera-Ready Final Submission** | **January 29, 2027 (Friday)** | Final camera-ready copies incorporating reviewer revisions |
@@ -60,23 +59,18 @@ The conference brings together faculty, researchers, students, and representativ
 ## Program Schedule of Activities
 
 ### Day 1: Welcome Dinner &mdash; February 16, 2027 (Tuesday)
-- **5:30 PM &ndash; 8:30 PM**: Welcome Program and Networking Dinner at De La Salle University with visiting international guests and institutional partners.
+- **5:30 PM**: Welcome Program and Networking Dinner
 
 ### Day 2: Main Conference Proper (Whole Day) &mdash; February 17, 2027 (Wednesday)
 - **08:00 AM &ndash; 09:00 AM**: Registration & Morning Coffee
 - **09:00 AM &ndash; 10:00 AM**: Opening Program & Keynotes
-  - Remarks from the Organizing Committee (DLSU Manila)
-  - Keynote: **TBA**
-  - Keynote: **TBA**
 - **10:00 AM &ndash; 11:30 AM**: Oral Presentations for Full Papers (Parallel Sessions)
-- **11:30 AM &ndash; 12:00 NN**: Keynote Address: **TBA**
+- **11:30 AM &ndash; 12:00 NN**: Keynote Address
 - **12:00 NN &ndash; 1:00 PM**: Lunch Break & Networking
 - **1:00 PM &ndash; 2:00 PM**: Afternoon Keynotes
-  - Keynote: **TBA**
-  - Keynote: **TBA**
 - **2:00 PM &ndash; 3:30 PM**: Oral Presentations for Full Papers & Extended Abstracts (Parallel Sessions)
 - **3:30 PM &ndash; 5:00 PM**: Poster Presentations for Ongoing Student Research
-- **5:00 PM &ndash; 6:00 PM**: Closing Remarks & Awarding Ceremony (*Best Paper Award & Best Student Presentation*)
+- **5:00 PM &ndash; 6:00 PM**: Closing Remarks & Awarding Ceremony
 - **6:00 PM**: Conference Dinner
 
 ### Day 3: Technical Visit & Cultural Tour &mdash; February 18, 2027 (Thursday)
@@ -136,9 +130,9 @@ Submissions should describe unpublished completed original work. Authors intendi
 - Reviewing is **double-blind**; authors must not indicate their names and affiliations in the submitted papers.
 - Accepted papers will be presented orally or as posters as determined by the committee.
 
-### Online Submission Portal:
-- Papers must be submitted online through the EasyChair Conference System:  
-  **EasyChair Portal:** [https://easychair.org/conferences/?conf=ailric2027](https://easychair.org/conferences/?conf=ailric2027)
+### Online Submission Form:
+- Papers must be submitted online through the official conference form:  
+  **Submission Form (Google Forms):** [https://forms.gle/zcJwr1Lb78QzjysG8](https://forms.gle/zcJwr1Lb78QzjysG8)
 
 ---
 
@@ -157,11 +151,11 @@ Submissions should describe unpublished completed original work. Authors intendi
 ## Invited Keynote Speakers & Partners
 
 ### Keynote Speakers:
-- **Dr. Jaehun Park** &mdash; Changwon National University, South Korea (*Invited Keynote Speaker*)
-- **Dr. Santoso Wibowo** &mdash; CQUniversity, Australia (*Invited Keynote Speaker*)
-- **Representative from DOST-ASTI** &mdash; Advanced Science and Technology Institute, DOST (*Government Technology Keynote*)
-- **Dr. Norshuhani Zamin** &mdash; Universiti Tenaga Nasional (UNITEN), Malaysia (*Invited Keynote Speaker*)
-- **Mr. Nardo Manoloto** &mdash; CEO & Co-Founder, Quantum Frontiers PH (*Industry Keynote Speaker*)
+- **TBA** &mdash; Changwon National University, South Korea (*Invited Keynote Speaker*)
+- **TBA** &mdash; CQUniversity, Australia (*Invited Keynote Speaker*)
+- **TBA** &mdash; Advanced Science and Technology Institute, DOST (*Government Technology Keynote*)
+- **TBA** &mdash; Universiti Tenaga Nasional (UNITEN), Malaysia (*Invited Keynote Speaker*)
+- **TBA** &mdash; CEO & Co-Founder, Quantum Frontiers PH (*Industry Keynote Speaker*)
 
 ### Partner Organizations:
 1. Changwon National University, South Korea
@@ -176,30 +170,9 @@ Submissions should describe unpublished completed original work. Authors intendi
 
 ---
 
-## Organizing Committee
+## Venue
 
-### Leadership:
-- **Program and Operation Chair:** Dr. Raphael Gonda &mdash; *De La Salle University, Philippines*
-- **General Chair:** Dr. Ryan Ebardo &mdash; *De La Salle University, Philippines*
-- **Co-Chair:** Dr. Jaehun Park &mdash; *Changwon National University, South Korea*
-- **Co-Chair:** Dr. Santoso Wibowo &mdash; *CQUniversity, Australia*
-
-### Committee Members:
-- **Dr. Si-il Sung** &mdash; *Kyonggi University, South Korea*
-- **Dr. Norshuhani Zamin** &mdash; *UNITEN, Malaysia*
-- **Dr. Marzel Penalida** &mdash; *De La Salle University, Philippines*
-- **Dylan Josh Lopez** &mdash; *Chung Hua University, Taiwan*
-- **Roger Luis Uy** &mdash; *De La Salle University, Philippines*
-- **John Byron Tuazon** &mdash; *De La Salle University, Philippines*
-- **Oliver Malabanan** &mdash; *De La Salle University, Philippines*
-
----
-
-## Venue & Accessibility
-
-- **Proposed Venue:** Pardo Hall, HS Building, De La Salle University, 2401 Taft Avenue, Malate, Manila 1004, Philippines.
-- **Campus:** De La Salle University Manila campus.
-- **Accessibility:** Situated along Taft Avenue, immediately adjacent to the LRT-1 Vito Cruz Station and across from University Mall. Accessible via NAIA Expressway and Metro Manila Skyway from Ninoy Aquino International Airport (approximately 25&ndash;40 minutes).
+De La Salle University
 
 ---
 

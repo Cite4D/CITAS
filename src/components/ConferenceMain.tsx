@@ -6,7 +6,80 @@ export const ConferenceMain: React.FC = () => {
 
   return (
     <article className="space-y-12 max-w-4xl mx-auto py-6">
-      {/* I. EVENT BACKGROUND & OBJECTIVES */}
+      {/* I. PAPER SUBMISSION GUIDELINES */}
+      <section id="submission" className="space-y-6">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-dlsu-900 border-b-2 border-dlsu-800 pb-2 uppercase tracking-wide">
+          Paper Submission Guidelines
+        </h2>
+
+        <div className="space-y-4 text-slate-900 text-base sm:text-lg leading-relaxed max-w-[65ch] text-pretty">
+          <p>{config.submissionGuidelines.summary}</p>
+
+          <p>
+            <strong>Formatting Format: </strong>
+            Authors intending to submit should follow the <strong>two-column ACL format (A4 size)</strong> and may consist of <strong>up to six (6) pages of content</strong>, excluding references and appendices.
+          </p>
+
+          <div className="p-4 bg-slate-50 border border-slate-300 space-y-2 text-sm sm:text-base">
+            <div className="font-bold text-slate-900">Official Manuscript Templates:</div>
+            <ul className="list-disc list-inside space-y-1 text-slate-800">
+              <li>
+                <strong>LaTeX Template: </strong>
+                <a
+                  href={config.submissionGuidelines.templateLatexUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-dlsu-800 font-bold underline hover:text-dlsu-900 break-all"
+                >
+                  {config.submissionGuidelines.templateLatexUrl}
+                </a>
+              </li>
+              <li>
+                <strong>Microsoft Word (.docx) Template: </strong>
+                <a
+                  href={config.submissionGuidelines.templateDocxUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-dlsu-800 font-bold underline hover:text-dlsu-900 break-all"
+                >
+                  {config.submissionGuidelines.templateDocxUrl}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="space-y-2">
+            <h3 className="text-xl font-bold text-slate-900">Review Policy:</h3>
+            <ul className="list-disc list-outside ml-6 space-y-1.5 text-slate-900 text-base leading-relaxed text-pretty">
+              {config.submissionGuidelines.blindReviewRules.map((rule, idx) => (
+                <li key={idx}>{rule}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="p-4 border border-slate-300 bg-slate-50 space-y-2 max-w-[68ch]">
+            <h3 className="text-lg font-bold text-slate-900">Online Submission Form:</h3>
+            <p className="text-base text-slate-900">
+              Papers must be submitted online through the official conference submission form:
+            </p>
+            <div className="pt-1">
+              <a
+                href={config.submissionGuidelines.portalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-base font-bold text-dlsu-900 hover:text-black underline inline-block"
+              >
+                &rarr; Submit Paper (Google Form)
+              </a>
+            </div>
+            <div className="text-xs font-mono text-slate-600 break-all pt-1">
+              Direct Link: {config.submissionGuidelines.portalUrl}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* II. EVENT BACKGROUND & OBJECTIVES */}
       <section id="objectives" className="space-y-6">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-dlsu-900 border-b-2 border-dlsu-800 pb-2 uppercase tracking-wide">
           Event Background & Objectives
@@ -32,40 +105,6 @@ export const ConferenceMain: React.FC = () => {
         <div className="p-4 bg-slate-50 border border-slate-300 text-sm sm:text-base text-slate-900 leading-relaxed max-w-[58ch] text-pretty">
           <strong>Publication Note: </strong>
           {config.publicationNote}
-        </div>
-      </section>
-
-      {/* II. IMPORTANT DATES (Clean SIBR Academic Table) */}
-      <section id="dates" className="space-y-6">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-dlsu-900 border-b-2 border-dlsu-800 pb-2 uppercase tracking-wide">
-          Important Dates
-        </h2>
-
-        <div className="overflow-x-auto max-w-[68ch]">
-          <table className="w-full text-left border-collapse border border-slate-400 text-base sm:text-lg">
-            <thead>
-              <tr className="bg-slate-100 border-b border-slate-400">
-                <th className="p-3 border-r border-slate-400 font-bold text-slate-900 w-1/2">
-                  Event / Milestone
-                </th>
-                <th className="p-3 font-bold text-slate-900">
-                  Date
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-300">
-              {config.importantDates.map((item) => (
-                <tr key={item.id} className="hover:bg-slate-50">
-                  <td className="p-3 border-r border-slate-300 text-slate-900 font-normal">
-                    {item.title}
-                  </td>
-                  <td className="p-3 text-slate-900 font-normal">
-                    {item.dateStr}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </section>
 
@@ -138,79 +177,6 @@ export const ConferenceMain: React.FC = () => {
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      {/* V. SUBMISSION GUIDELINES */}
-      <section id="submission" className="space-y-6">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-dlsu-900 border-b-2 border-dlsu-800 pb-2 uppercase tracking-wide">
-          Paper Submission Guidelines
-        </h2>
-
-        <div className="space-y-4 text-slate-900 text-base sm:text-lg leading-relaxed max-w-[65ch] text-pretty">
-          <p>{config.submissionGuidelines.summary}</p>
-
-          <p>
-            <strong>Formatting Format: </strong>
-            Authors intending to submit should follow the <strong>two-column ACL format (A4 size)</strong> and may consist of <strong>up to six (6) pages of content</strong>, excluding references and appendices.
-          </p>
-
-          <div className="p-4 bg-slate-50 border border-slate-300 space-y-2 text-sm sm:text-base">
-            <div className="font-bold text-slate-900">Official Manuscript Templates:</div>
-            <ul className="list-disc list-inside space-y-1 text-slate-800">
-              <li>
-                <strong>LaTeX Template: </strong>
-                <a
-                  href={config.submissionGuidelines.templateLatexUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-dlsu-800 font-bold underline hover:text-dlsu-900 break-all"
-                >
-                  {config.submissionGuidelines.templateLatexUrl}
-                </a>
-              </li>
-              <li>
-                <strong>Microsoft Word (.docx) Template: </strong>
-                <a
-                  href={config.submissionGuidelines.templateDocxUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-dlsu-800 font-bold underline hover:text-dlsu-900 break-all"
-                >
-                  {config.submissionGuidelines.templateDocxUrl}
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="space-y-2">
-            <h3 className="text-xl font-bold text-slate-900">Review Policy:</h3>
-            <ul className="list-disc list-outside ml-6 space-y-1.5 text-slate-900 text-base leading-relaxed text-pretty">
-              {config.submissionGuidelines.blindReviewRules.map((rule, idx) => (
-                <li key={idx}>{rule}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="p-4 border border-slate-300 bg-slate-50 space-y-2 max-w-[68ch]">
-            <h3 className="text-lg font-bold text-slate-900">Online Submission System:</h3>
-            <p className="text-base text-slate-900">
-              Papers must be submitted online through the EasyChair Conference System:
-            </p>
-            <div className="pt-1">
-              <a
-                href={config.submissionGuidelines.portalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-base font-bold text-dlsu-900 hover:text-black underline inline-block"
-              >
-                &rarr; Go to EasyChair Submission Portal
-              </a>
-            </div>
-            <div className="text-xs font-mono text-slate-600 break-all pt-1">
-              Direct Link: {config.submissionGuidelines.portalUrl}
-            </div>
-          </div>
         </div>
       </section>
 
@@ -309,56 +275,15 @@ export const ConferenceMain: React.FC = () => {
         </div>
       </section>
 
-      {/* VIII. ORGANIZING COMMITTEE */}
-      <section id="committee" className="space-y-6">
+      {/* VIII. VENUE */}
+      <section id="venue" className="space-y-4">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-dlsu-900 border-b-2 border-dlsu-800 pb-2 uppercase tracking-wide">
-          Proposed Organizing Committee
+          Venue
         </h2>
 
-        <div className="space-y-4 max-w-[68ch]">
-          <h3 className="text-xl font-bold text-slate-900">Leadership:</h3>
-          <ul className="space-y-1.5 text-slate-900 text-base sm:text-lg">
-            {config.committeeLeadership.map((c, idx) => (
-              <li key={idx}>
-                <strong>{c.role}: </strong>
-                <span>{c.name}</span> &mdash; <span className="text-slate-700 text-sm sm:text-base">{c.affiliation}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="space-y-3 pt-2 max-w-[68ch]">
-          <h3 className="text-xl font-bold text-slate-900">Committee Members:</h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-900 text-sm sm:text-base">
-            {config.committeeMembers.map((m, idx) => (
-              <li key={idx} className="border-b border-slate-200 pb-1">
-                <strong>{m.name}</strong> &mdash; <span className="text-slate-700">{m.affiliation}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* IX. VENUE & LOCATION */}
-      <section id="venue" className="space-y-6">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-dlsu-900 border-b-2 border-dlsu-800 pb-2 uppercase tracking-wide">
-          Venue & Location
-        </h2>
-
-        <div className="space-y-3 text-slate-900 text-base sm:text-lg leading-relaxed max-w-[65ch] text-pretty">
-          <p>
-            <strong>Proposed Venue: </strong>
-            {config.venueDetailed}
-          </p>
-          <p>
-            <strong>Campus: </strong>
-            De La Salle University, 2401 Taft Avenue, Malate, Manila 1004, Philippines.
-          </p>
-          <p>
-            <strong>Accessibility: </strong>
-            Situated along Taft Avenue, immediately adjacent to the LRT-1 Vito Cruz Station and across from University Mall. Accessible via NAIA Expressway and Metro Manila Skyway from Ninoy Aquino International Airport (approximately 25–40 minutes).
-          </p>
-        </div>
+        <p className="text-slate-900 text-base sm:text-lg leading-relaxed max-w-[65ch]">
+          {config.venueBrief}
+        </p>
       </section>
 
       {/* X. INQUIRIES & CONTACT PERSON */}

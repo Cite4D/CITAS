@@ -1,13 +1,13 @@
 import { ConferenceConfig } from '../types/conference';
 
 export const defaultConferenceData: ConferenceConfig = {
-  version: 3,
+  version: 4,
   lastUpdated: new Date().toISOString(),
   acronym: 'CITAS 2027',
   fullName: 'International Conference on Innovation, Technology, and Analytics for Society',
   datesText: 'February 16 to 18, 2027',
-  venueBrief: 'De La Salle University, Manila, Philippines',
-  venueDetailed: 'Pardo Hall, HS Building, De La Salle University, 2401 Taft Avenue, Malate, Manila, Philippines (Venue is tentative pending confirmation).',
+  venueBrief: 'De La Salle University',
+  venueDetailed: 'De La Salle University',
   backgroundText: [
     'The International Conference on Innovation, Technology and Analytics for Society (CITAS) 2027 is a three-day academic conference to be held on February 16 to 18, 2027 at De La Salle University, Manila, Philippines.',
     'The conference will gather faculty, researchers, students, and representatives of partner institutions to share work on innovation, technology, and analytics and their application specifically to society. It will also serve as a venue for students and aspiring researchers to present their research and capstone projects to an external audience.'
@@ -24,7 +24,7 @@ export const defaultConferenceData: ConferenceConfig = {
       id: 'd1',
       dateStr: 'December 18, 2026 (Friday)',
       title: 'Deadline for Paper Submission',
-      notes: 'Initial manuscript submission via EasyChair system.',
+      notes: 'Initial manuscript submission via online form.',
       isHighlight: true
     },
     {
@@ -73,11 +73,7 @@ export const defaultConferenceData: ConferenceConfig = {
       items: [
         {
           time: '5:30 PM',
-          description: 'Welcome Program and Networking Dinner',
-          details: [
-            'Welcome remarks by De La Salle University organizers',
-            'Dinner with visiting international guests and institutional partners'
-          ]
+          description: 'Welcome Program and Networking Dinner'
         }
       ]
     },
@@ -91,12 +87,7 @@ export const defaultConferenceData: ConferenceConfig = {
         },
         {
           time: '09:00 - 10:00 AM',
-          description: 'Opening Program & Keynotes',
-          details: [
-            'Remarks from the Organizing Committee from De La Salle University, Manila, Philippines',
-            'Invited Speaker (1): TBA',
-            'Invited Speaker (2): TBA'
-          ]
+          description: 'Opening Program & Keynotes'
         },
         {
           time: '10:00 - 11:30 AM',
@@ -104,10 +95,7 @@ export const defaultConferenceData: ConferenceConfig = {
         },
         {
           time: '11:30 - 12:00 NN',
-          description: 'Keynote Address',
-          details: [
-            'Invited Speaker: TBA'
-          ]
+          description: 'Keynote Address'
         },
         {
           time: '12:00 - 1:00 PM',
@@ -115,11 +103,7 @@ export const defaultConferenceData: ConferenceConfig = {
         },
         {
           time: '1:00 - 2:00 PM',
-          description: 'Afternoon Keynotes',
-          details: [
-            'Invited Speaker (3): TBA',
-            'Invited Speaker (4): TBA'
-          ]
+          description: 'Afternoon Keynotes'
         },
         {
           time: '2:00 - 3:30 PM',
@@ -131,10 +115,7 @@ export const defaultConferenceData: ConferenceConfig = {
         },
         {
           time: '5:00 - 6:00 PM',
-          description: 'Closing Remarks & Awarding Ceremony',
-          details: [
-            'Best Paper Award and Best Student Presentation recognition'
-          ]
+          description: 'Closing Remarks & Awarding Ceremony'
         },
         {
           time: '6:00 PM',
@@ -284,7 +265,7 @@ export const defaultConferenceData: ConferenceConfig = {
     summary: 'Submissions should describe unpublished completed original work. Authors intending to submit should follow the two-column ACL format. Please note that CITAS is not an ACL event; the ACL template is adopted solely for formatting consistency.',
     templateLatexUrl: 'https://github.com/acl-org/acl-style-files',
     templateDocxUrl: 'https://2023.aclweb.org/calls/style_and_formatting/',
-    portalUrl: 'https://easychair.org/conferences/?conf=ailric2027',
+    portalUrl: 'https://forms.gle/zcJwr1Lb78QzjysG8',
     blindReviewRules: [
       'No page number should appear in the paper.',
       'Submissions will be judged based on relevance, technical strength, significance, opportunities, and interest to attendees.',
