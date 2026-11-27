@@ -7,9 +7,9 @@
     "dev": "vite",
     "dev:host": "vite --host 0.0.0.0",
     "build": "tsc && vite build",
-    "build:docs": "tsc && vite build && node -e \"const fs=require('fs'); fs.rmSync('docs', {recursive:true, force:true}); fs.cpSync('dist', 'docs', {recursive:true}); fs.copyFileSync('dist/index.html', 'docs/404.html'); fs.writeFileSync('docs/.nojekyll', ''); console.log('✓ Synced dist to docs/ with .nojekyll');\"",
-    "predeploy": "npm run build && node -e \"const fs=require('fs'); fs.copyFileSync('dist/index.html', 'dist/404.html'); fs.writeFileSync('dist/.nojekyll', '');\"",
-    "deploy": "gh-pages -d dist",
+    "build:docs": "tsc && vite build --base=./ --outDir docs && node -e \"const fs=require('fs'); fs.copyFileSync('docs/index.html', 'docs/404.html'); fs.writeFileSync('docs/.nojekyll', ''); console.log('✓ Built docs/ with relative base ./');\"",
+    "predeploy": "npm run build:docs",
+    "deploy": "gh-pages -d docs",
     "preview": "vite preview --host 0.0.0.0 --port 4173"
   },
   "dependencies": {

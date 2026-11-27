@@ -37,9 +37,9 @@ jobs:
       - name: Install Dependencies
         run: npm install --no-audit
 
-      - name: Build Conference Website
+      - name: Build Conference Website for GitHub Pages
         run: |
-          npm run build
+          npx vite build --base=./
           cp dist/index.html dist/404.html
           touch dist/.nojekyll
 
